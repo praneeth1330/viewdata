@@ -1,0 +1,48 @@
+@mixin signin {
+  width: 80%;
+  text-align: center;
+  border: 2px solid black;
+}
+@mixin width {
+  width: auto;
+  padding: 20px;
+  border: 2px solid black;
+  text-align: center;
+  font-size: large;
+  @media (max-width: 768px) {
+    padding: 10px; // Hide the container on smaller screens
+  }
+}
+@mixin flx-c {
+  display: flex;
+  flex-direction: column;
+}
+@mixin profile-icon {
+  color: black;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 20px;
+  width: auto;
+  height: 60px;
+  border-bottom: 1px solid $text-light;
+  background-color: #fff;
+}
+@mixin icons {
+  @include profile-icon;
+  .profile-icons {
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    background-color: #fff;
+
+    color: $text-light;
+    &:hover {
+      color: $primary-color;
+    }
+  }
+  p {
+    font-size: medium;
+    background-color: #fff;
+  }
+}
