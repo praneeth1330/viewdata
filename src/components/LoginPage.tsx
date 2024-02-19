@@ -4,6 +4,8 @@ import { IoMdArrowRoundBack } from "react-icons/io";
 import logo from "../images/logo.png";
 import graph from "../images/graph.png";
 import "./login.scss";
+// import "./newLogin.scss";
+import { IoCloseOutline } from "react-icons/io5";
 
 interface LoginPageState {
   signIn: boolean;
@@ -79,7 +81,7 @@ export class LoginPage extends Component<{}, LoginPageState> {
         <div className="signup-left-container">
           <div className="uper-text">
             <div className="header-txt">
-              <h1>welcome to </h1>
+              <h1>Welcome to </h1>
               <img src={logo} alt="" />
             </div>
             <p className="lorem">
@@ -88,29 +90,29 @@ export class LoginPage extends Component<{}, LoginPageState> {
               molestias suscipit consequatur consequuntur, nisi perspiciatis
               pariatur! Amet id quam ipsum deserunt!
             </p>
-            <h3>Please Sign in to Continue </h3>
-            <p>by Signing you will access best features</p>
+            <h3>Please sign in to continue </h3>
+            <p>By Signing you will access best features</p>
           </div>
           {signIn ? (
             <div className="cards-login">
               <div className="login-sso">
                 <Link to="/home" className="signin">
-                  <h3>sign in with Apple</h3>
+                  <h3>Sign in with Apple</h3>
                 </Link>
 
                 <Link to="/home" className="signin">
-                  <h3>sign in with Google</h3>
+                  <h3>Sign in with Google</h3>
                 </Link>
 
                 <div className="signin">
-                  <h3 onClick={this.cardChange}>sign in with Email</h3>
+                  <h3 onClick={this.cardChange}>Sign in with Email</h3>
                 </div>
               </div>
             </div>
           ) : (
             <div className="signin-email">
-              <div className="">
-                <IoMdArrowRoundBack
+              <div className="cross-button">
+                <IoCloseOutline
                   className="backarrow-login"
                   onClick={this.cardChange}
                 />
@@ -142,22 +144,23 @@ export class LoginPage extends Component<{}, LoginPageState> {
                     {passwordError}
                   </div>
                 </div>
+
                 <div className="signin-btn">
                   <button type="submit">Sign In</button>
                 </div>
               </form>
               <div className="remember-forgot">
-                <div className="rem">
+                <div className="remember-me">
                   <input type="checkbox" name="remember-me" id="remember-me" />
                   <label htmlFor="remember-me">Remember Me</label>
                 </div>
                 <p>Forgot password</p>
               </div>
-              <div className="sign-up">
+              {/* <div className="sign-up">
                 <p>
                   Don't have a account? <span>Signup</span>
                 </p>
-              </div>
+              </div> */}
             </div>
           )}
         </div>

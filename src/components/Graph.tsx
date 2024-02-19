@@ -1,5 +1,3 @@
-// GraphDetailsPage.js
-
 import React from "react";
 import { connect } from "react-redux";
 import { Link, useParams } from "react-router-dom";
@@ -7,22 +5,79 @@ import Chart from "react-apexcharts";
 import NavBar from "./NavBar";
 import { IoArrowBackOutline } from "react-icons/io5";
 import "./graphdetails.scss";
+import { MdOutlineArrowBackIosNew } from "react-icons/md";
 
-const GraphDetailsPage = ({ graphs }) => {
-  const { id } = useParams();
+interface GraphData {
+  company_name: string;
+  principal_business_activity_as_per_cin: string;
+  authorized_cap: number;
+  paidup_capital: number;
+  company_class: string;
+  company_status: string;
+  registered_state: string;
+}
 
-  const graphData = graphs[id] || [];
+interface RootState {
+  graphs: {
+    graphs: GraphData[][];
+  };
+}
+
+interface RouteParams {
+  id: string;
+}
+
+interface Props {
+  graphs: GraphData[][];
+}
+
+const Graph: React.FC<Props> = ({ graphs }) => {
+  const { id } = useParams<RouteParams>();
+
+  const graphData = graphs[parseInt(id, 10)] || [];
+
+  if (graphData.length === 0) {
+    return <div>No data available</div>; // Render message if no data is found
+  }
 
   return (
     <div className="single-graph">
       <NavBar />
-      <div className="back-arrow">
+      <div className="back">
         <Link to="/home">
-          <IoArrowBackOutline className="back-button" />
+          <MdOutlineArrowBackIosNew className="back-button" />
         </Link>
-        <h3>{graphData.length > 0 && graphData[0].registered_state}</h3>
+      </div>
+      <div className="graph-text">
+        <h3>{graphData[0].registered_state}</h3>
       </div>
       <div className="single-graph-container">
+        <div className="chart">
+          <p>Chart Data of company's</p>
+          <Chart
+            options={{
+              chart: {
+                id: `basic-bar-details`,
+
+                // parentHeightOffset: 0,
+              },
+
+              xaxis: {
+                categories: graphData.map((record) =>
+                  record.company_name.slice(0, 10)
+                ),
+              },
+            }}
+            series={[
+              {
+                name: `series-details`,
+                data: graphData.map((record) => record.paidup_capital),
+              },
+            ]}
+            type="line"
+            className="chart-data"
+          />
+        </div>
         <div className="table">
           <p>Tabular data of company's</p>
           <table>
@@ -50,35 +105,9 @@ const GraphDetailsPage = ({ graphs }) => {
             </tbody>
           </table>
         </div>
-        <div className="chart">
-          <p>Chart Data of company's</p>
-          <Chart
-            options={{
-              chart: {
-                id: `basic-bar-details`,
-              },
-              xaxis: {
-                categories: graphData.map((record) =>
-                  record.company_name.slice(0, 10)
-                ),
-              },
-            }}
-            series={[
-              {
-                name: `series-details`,
-                data: graphData.map((record) => record.paidup_capital),
-              },
-            ]}
-            type="line"
-            className="chart-data"
-          />
-        </div>
       </div>
       <div className="company-details">
-        <h3>
-          The Company's Master Data of{" "}
-          {graphData.length > 0 && graphData[0].registered_state}
-        </h3>
+        <h3>The Company's Master Data of {graphData[0].registered_state}</h3>
         <div className="company-data">
           <p>
             Lorem ipsum dolor sit amet consectetur, adipisicing elit. Cupiditate
@@ -98,8 +127,8 @@ const GraphDetailsPage = ({ graphs }) => {
   );
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   graphs: state.graphs.graphs,
 });
 
-export default connect(mapStateToProps)(GraphDetailsPage);
+export default connect(mapStateToProps)(Graph);

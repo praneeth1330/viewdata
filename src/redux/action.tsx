@@ -1,10 +1,11 @@
-// actions.ts
-
 import axios from "axios";
 import { Dispatch } from "redux";
+export const UPDATE_SEARCH_QUERY = "UPDATE_SEARCH_QUERY";
 
 export const fetchGraphs = () => {
   return async (dispatch: Dispatch) => {
+    dispatch({ type: "FETCH_GRAPHS_REQUEST" }); // Dispatch action to indicate data fetching started
+
     const apiURLs = [
       "https://api.data.gov.in/resource/af3ce5b4-a469-4a0d-9e55-d2faa054afbd?api-key=579b464db66ec23bdd000001818659bdf1f54b0e51a76cec8f25aee7&format=json",
       "https://api.data.gov.in/resource/d69b405e-78ce-463e-bbcd-b177aadcc729?api-key=579b464db66ec23bdd000001818659bdf1f54b0e51a76cec8f25aee7&format=json",
@@ -24,11 +25,18 @@ export const fetchGraphs = () => {
       const chartsData = responses.map((response) => response.data.records);
 
       dispatch(addGraphs(chartsData));
+      dispatch({ type: "FETCH_GRAPHS_SUCCESS" }); // Dispatch action to indicate data fetching success
     } catch (error) {
       console.error("Error fetching data:", error);
+      dispatch({ type: "FETCH_GRAPHS_FAILURE" }); // Dispatch action to indicate data fetching failure
     }
   };
 };
+
+export const updateSearchQuery = (query: any) => ({
+  type: UPDATE_SEARCH_QUERY,
+  payload: query,
+});
 
 export const addGraphs = (graphs: any[]) => ({
   type: "ADD_GRAPHS",

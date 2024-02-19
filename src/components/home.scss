@@ -5,14 +5,14 @@
   justify-content: space-around;
   align-items: center;
   width: 100%;
-  gap: 10px 0;
+  gap: 20px;
   color: red;
+
   @media (max-width: 768px) {
     display: grid;
     grid-template-columns: auto;
     justify-content: center;
     align-items: center;
-    // Show the hamburger icon on smaller screens
   }
   h5 {
     color: black;
@@ -28,9 +28,35 @@
   margin: 0 5%;
 }
 
-.charts {
+.chart-home {
   border: 1px solid black;
   margin: 0;
   width: 100%;
   z-index: -100;
+  text-align: center;
+}
+
+.main-charts {
+  border: 2px solid black;
+  padding: 5px;
+
+  .chart-home {
+    width: 100%;
+  }
+  h5 {
+    text-align: center;
+    padding: 10px 0;
+  }
+}
+.spinner {
+  animation: spin 1s infinite linear; /* Use the spin animation on the spinner icon */
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg); /* Start the rotation from 0 degrees */
+  }
+  to {
+    transform: rotate(360deg); /* End the rotation at 360 degrees */
+  }
 }
