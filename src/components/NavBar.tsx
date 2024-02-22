@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import logo_nav from "../images/nav-logo.png";
-import "./nav-bar.scss";
+// import "./nav-bar.scss";
 import { FaRegUserCircle } from "react-icons/fa";
 import { IoIosNotificationsOutline } from "react-icons/io";
 import { RxHamburgerMenu } from "react-icons/rx";
@@ -15,6 +15,9 @@ import { LuHelpCircle } from "react-icons/lu";
 import { BiLogOut } from "react-icons/bi";
 import ProfileMenu from "./ProfileMenu";
 import { Link } from "react-router-dom";
+import { MdOutlineNotificationsNone } from "react-icons/md";
+import { TbUserEdit } from "react-icons/tb";
+import "./newNav.scss";
 
 export class NavBar extends Component {
   state = {
@@ -36,33 +39,35 @@ export class NavBar extends Component {
     return (
       <div className="main-nav">
         <nav>
-          <img src={logo_nav} alt="" width={200} className="logo-img" />
+          <img src={logo_nav} alt="" className="logo-img" />
 
           <div className="search-nav">
             <input type="text" placeholder="search" />
           </div>
           <div className="profile">
-            <div className="notification">
-              <IoIosNotificationsOutline className="notification-bar" />
-            </div>
-            <div className="larg-menu">
-              <FaRegUserCircle
-                className="notification-bar profilechange"
-                onClick={this.windowMenu}
-              />
+            <div className="nav-icons">
+              <div className="notification">
+                <MdOutlineNotificationsNone className="notification-bar" />
+              </div>
+              <div className="larg-menu">
+                <FaRegUserCircle
+                  className="notification-bar profilechange"
+                  onClick={this.windowMenu}
+                />
+              </div>
             </div>
 
             <div className="hamburger">
               {this.state.showMenu ? (
                 <div className="cross">
-                  <RxCross1
+                  <FaRegUserCircle
                     className="notification-bar"
                     onClick={this.mobileMenu}
                   />
                   <ProfileMenu />
                 </div>
               ) : (
-                <RxHamburgerMenu
+                <FaRegUserCircle
                   className="notification-bar "
                   onClick={this.mobileMenu}
                 />
@@ -87,7 +92,7 @@ export class NavBar extends Component {
                 <p>My Profile</p>
               </div>
               <div className="icons-lg">
-                <LiaUserEditSolid className="profile-icons-lg" />
+                <TbUserEdit className="profile-icons-lg" />
 
                 <p>Edit Profile</p>
               </div>

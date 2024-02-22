@@ -10,6 +10,7 @@ module.exports = {
     path: path.resolve(__dirname, "..", "./build"),
     filename: "bundle.js",
     assetModuleFilename: "[name][ext]",
+    publicPath: "/",
   },
   resolve: {
     extensions: [".tsx", ".ts", ".jsx", ".js"],
@@ -53,12 +54,11 @@ module.exports = {
   ],
   devServer: {
     static: {
-      directory: path.resolve(__dirname, "..", "/build"), // Specify the directory to serve files from
+      directory: path.join(__dirname, "..", "build"), // Specify the directory to serve files from
     },
     compress: true,
     port: 3000,
     open: true,
-    publicPath: "/",
     historyApiFallback: true,
   },
 };

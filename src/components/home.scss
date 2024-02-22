@@ -1,12 +1,13 @@
+@import "../veriables";
 @import "../mixin";
-.chart-display {
-  display: grid;
-  grid-template-columns: 30% 30% 30%;
-  justify-content: space-around;
+.graph-page {
+  display: flex;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
+}
+.chart-display {
   width: 100%;
-  gap: 20px;
-  color: red;
 
   @media (max-width: 768px) {
     display: grid;
@@ -25,11 +26,9 @@
 .graph-page {
   @include flx-c;
   justify-content: center;
-  margin: 0 5%;
 }
 
 .chart-home {
-  border: 1px solid black;
   margin: 0;
   width: 100%;
   z-index: -100;
@@ -48,15 +47,145 @@
     padding: 10px 0;
   }
 }
-.spinner {
-  animation: spin 1s infinite linear; /* Use the spin animation on the spinner icon */
+.loader {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-top: 20%;
+
+  @media (max-width: 768px) {
+    height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .spinner {
+    font-size: xx-large;
+    animation: spin 1s infinite linear;
+  }
 }
 
 @keyframes spin {
   from {
-    transform: rotate(0deg); /* Start the rotation from 0 degrees */
+    transform: rotate(0deg);
   }
   to {
-    transform: rotate(360deg); /* End the rotation at 360 degrees */
+    transform: rotate(360deg);
+  }
+}
+
+.graphs-select {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  width: 100%;
+  gap: 20px;
+  align-items: center;
+  justify-content: space-around;
+  @media (max-width: 768px) {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+}
+
+.main-charts {
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.3), 0 6px 10px 0 rgba(0, 0, 0, 0.08);
+  border-radius: 5px;
+  border: transparent;
+  @media (max-width: 768px) {
+  }
+  .chart-state {
+    margin: 0 5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    @media (max-width: 768px) {
+      margin: 0;
+    }
+
+    .single-chart {
+      width: 900px;
+      // border: 2px solid $background;
+      height: 700px;
+      border: transparent;
+      box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.3),
+        0 6px 10px 0 rgba(0, 0, 0, 0.08);
+      border-radius: 10px;
+
+      @media (max-width: 768px) {
+        width: 300px;
+        height: 200px;
+      }
+    }
+  }
+}
+
+.select {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 5%;
+  @media (max-width: 768px) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 10%;
+    h3 {
+      font-size: small;
+      font-weight: normal;
+    }
+  }
+}
+
+.allgraphs {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 5%;
+  @media (max-width: 768px) {
+    margin: 0;
+  }
+}
+.apexcharts-datalabel {
+  fill: rgb(93, 91, 91);
+  font-size: 8px;
+  font-weight: lighter;
+  font-style: normal;
+}
+
+.select-dropdown {
+  position: relative;
+  width: 130px;
+
+  select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid $text-light;
+    border-radius: 5px;
+    background-color: #fff;
+    appearance: none; /* Remove default arrow */
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.3s ease-in-out;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.3), 0 6px 10px 0 rgba(0, 0, 0, 0.08);
+  }
+
+  &::after {
+    content: "\25bc";
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: $primary-color;
+  }
+
+  select option {
+    background-color: #fff;
+    color: $text-light;
   }
 }

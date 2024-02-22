@@ -1,110 +1,188 @@
-import React, { Component } from "react";
+import React, { Component, ChangeEvent } from "react";
 import { connect } from "react-redux";
-import { addGraphs } from "../redux/action";
-import axios from "axios";
+import { Dispatch } from "redux";
+import { fetchGraphs } from "../redux/action";
 import Chart from "react-apexcharts";
 import { Link } from "react-router-dom";
-import "./home.scss";
 import NavBar from "./NavBar";
-import { fetchGraphs } from "../redux/action";
+// import "./home.scss";
+import { RootState } from "../redux/store";
+import { FaSpinner } from "react-icons/fa";
 
-interface RootState {
-  graphs: {
-    graphs: any[];
-  };
+import "./newhome.scss";
+
+interface HomeProps {
+  loading: boolean;
+  graphs: GraphData[];
+  fetchGraphs: () => void;
 }
 
-interface Props {
-  graphs: any[];
-  addGraphs: (graphs: any[]) => void;
+interface State {
+  selectedState: string;
 }
 
-class Home extends Component<Props> {
-  state = {
-    chartsData: [],
+class Home extends Component<HomeProps, State> {
+  state: State = {
+    selectedState: "",
   };
 
   componentDidMount() {
     this.props.fetchGraphs();
   }
 
-  async fetchDataFromApis() {
-    const apiURLs = [
-      "https://api.data.gov.in/resource/af3ce5b4-a469-4a0d-9e55-d2faa054afbd?api-key=579b464db66ec23bdd000001818659bdf1f54b0e51a76cec8f25aee7&format=json",
-      "https://api.data.gov.in/resource/d69b405e-78ce-463e-bbcd-b177aadcc729?api-key=579b464db66ec23bdd000001818659bdf1f54b0e51a76cec8f25aee7&format=json",
-      "https://api.data.gov.in/resource/04431104-6db3-4324-8a8b-5db3baa0a99d?api-key=579b464db66ec23bdd000001cdd3946e44ce4aad7209ff7b23ac571b&format=json",
-      "https://api.data.gov.in/resource/8c658b1c-8ee6-474c-9ac8-09e54df73479?api-key=579b464db66ec23bdd000001cdd3946e44ce4aad7209ff7b23ac571b&format=json",
-      "https://api.data.gov.in/resource/a22c20cc-0bc0-44b2-a187-656dd3da3ebf?api-key=579b464db66ec23bdd000001cdd3946e44ce4aad7209ff7b23ac571b&format=json",
-      "https://api.data.gov.in/resource/7cb9db7d-8241-45cb-9644-a048a0286602?api-key=579b464db66ec23bdd000001cdd3946e44ce4aad7209ff7b23ac571b&format=json",
-      "https://api.data.gov.in/resource/a74d1f0f-ab3e-4d61-ad15-71c9233e7393?api-key=579b464db66ec23bdd000001cdd3946e44ce4aad7209ff7b23ac571b&format=json",
-      "https://api.data.gov.in/resource/d06978c6-62c2-43a7-9876-1d6e0f30a8e2?api-key=579b464db66ec23bdd000001cdd3946e44ce4aad7209ff7b23ac571b&format=json",
-      "https://api.data.gov.in/resource/36af6f80-af7a-4c94-83ec-b56e38ae384d?api-key=579b464db66ec23bdd000001cdd3946e44ce4aad7209ff7b23ac571b&format=json",
-      "https://api.data.gov.in/resource/36af6f80-af7a-4c94-83ec-b56e38ae384d?api-key=579b464db66ec23bdd000001cdd3946e44ce4aad7209ff7b23ac571b&format=json",
-      "https://api.data.gov.in/resource/0d680b33-42d4-4591-a897-7cee09703966?api-key=579b464db66ec23bdd000001cdd3946e44ce4aad7209ff7b23ac571b&format=json",
-    ];
+  handleStateChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    this.setState({ selectedState: event.target.value });
+  };
 
-    try {
-      const responses = await Promise.all(apiURLs.map((url) => axios.get(url)));
-      const chartsData = responses.map((response) => response.data.records);
-
-      this.setState({
-        chartsData: chartsData,
-      });
-
-      this.props.addGraphs(chartsData);
-    } catch (error) {
-      console.error("Error fetching data:", error);
+  shuffleColors = () => {
+    const colors = ["#74E291", "#40A2E3", "#D04848", "#FDE767"];
+    for (let i = colors.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [colors[i], colors[j]] = [colors[j], colors[i]];
     }
-  }
+    return colors;
+  };
 
   render() {
+    const { loading, graphs } = this.props;
+    const { selectedState } = this.state;
+
+    console.log("selected", selectedState);
+
+    if (loading) {
+      return (
+        <div>
+          <NavBar />
+          <div
+            className="loader"
+            // style={{ textAlign: "center", marginTop: "50px" }}
+          >
+            <FaSpinner className="spinner" /> <h1>Loading...</h1>
+          </div>
+        </div>
+      );
+    }
+
+    const filteredGraphs = graphs.filter(
+      (graph) => graph[0].registered_state === selectedState
+    );
+
     return (
       <>
         <NavBar />
-        <div className="graph-page">
-          <h1>Displaying the data of the company's </h1>
 
-          <div className="chart-display ">
-            {this.state.chartsData.map((data, index) => (
-              <div className="main-charts" key={index}>
-                <Link
-                  to={`/graph-details/${index}`}
-                  state={{ graphData: data }}
-                  style={{ textDecoration: "none" }}
-                >
-                  <h5>
-                    {[
-                      ...new Set(
-                        data.map((state: any) => state.registered_state)
-                      ),
-                    ]}
-                  </h5>{" "}
-                  <div className="charts">
-                    <Chart
-                      options={{
-                        chart: {
-                          id: `basic-bar-${index}`,
-                        },
-                        xaxis: {
-                          categories: data?.map((record: any) =>
-                            record.company_name.slice(0, 10)
-                          ),
-                        },
-                      }}
-                      series={[
-                        {
-                          name: `series-${index}`,
-                          data: data?.map(
-                            (record: any) => record.paidup_capital
-                          ),
-                        },
-                      ]}
-                      type="line"
-                    />
+        <div className="allmainGraphs">
+          <div className="select">
+            <h3>Displaying the data of the company's Annual Import</h3>
+            <div className="select-dropdown">
+              <select
+                name="stateSelector"
+                id="stateSelector"
+                value={selectedState}
+                onChange={this.handleStateChange}
+              >
+                <option value="">Select a state</option>
+                {graphs.map((graph, index) => (
+                  <option key={index} value={graph[0].registered_state}>
+                    {graph[0].registered_state}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+          <div className="graph-page">
+            <div className="chart-display">
+              {filteredGraphs.length > 0 ? (
+                filteredGraphs.map((filteredGraph, index) => (
+                  <div key={index} className="main-charts">
+                    <Link
+                      to={`/graph-details/${index}`}
+                      state={{ graphData: filteredGraph }}
+                      style={{ textDecoration: "none" }}
+                    >
+                      <div className="chart-state">
+                        <Chart
+                          options={{
+                            chart: {
+                              id: `basic-bar-${index}`,
+                            },
+                            xaxis: {
+                              categories: filteredGraph.map((record) =>
+                                record.company_name.slice(0, 5)
+                              ),
+                            },
+                            colors: this.shuffleColors(),
+                          }}
+                          series={[
+                            {
+                              name: `series-${index}`,
+                              data: filteredGraph.map(
+                                (record) => record.paidup_capital
+                              ),
+                            },
+                          ]}
+                          type={Math.random() < 0.5 ? "line" : "bar"}
+                          // width={700}
+                          class="single-chart"
+                        />
+                      </div>
+                      <h5 style={{ margin: 0 }}>
+                        {filteredGraph[0].registered_state}
+                      </h5>
+                    </Link>
                   </div>
-                </Link>
-              </div>
-            ))}
+                ))
+              ) : (
+                <div className="allgraphs">
+                  <div className="graphs-select">
+                    {graphs.map((data, index) => (
+                      <div className="main-charts" key={index}>
+                        <Link
+                          to={`/graph-details/${index}`}
+                          state={{ graphData: data }}
+                          style={{ textDecoration: "none" }}
+                        >
+                          <div className="chart-home">
+                            <Chart
+                              options={{
+                                chart: {
+                                  id: `basic-bar-${index}`,
+                                  foreColor: this.shuffleColors(),
+                                },
+
+                                xaxis: {
+                                  categories: data?.map((record: any) =>
+                                    record.company_name.slice(0, 5)
+                                  ),
+                                },
+                                colors: this.shuffleColors(),
+                              }}
+                              series={[
+                                {
+                                  name: `series-${index}`,
+                                  data: data?.map(
+                                    (record: any) => record.paidup_capital
+                                  ),
+                                },
+                              ]}
+                              type={Math.random() < 0.5 ? "line" : "bar"}
+                              class="chart-single"
+                            />
+                          </div>
+                          <h5 style={{ margin: 0 }}>
+                            {[
+                              ...new Set(
+                                data.map((state) => state.registered_state)
+                              ),
+                            ]}
+                          </h5>
+                        </Link>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </>
@@ -114,6 +192,11 @@ class Home extends Component<Props> {
 
 const mapStateToProps = (state: RootState) => ({
   graphs: state.graphs.graphs,
+  loading: state.graphs.loading,
 });
 
-export default connect(mapStateToProps, { addGraphs })(Home);
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  fetchGraphs: () => dispatch(fetchGraphs()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

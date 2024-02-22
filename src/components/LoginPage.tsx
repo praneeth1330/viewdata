@@ -3,9 +3,12 @@ import { Link } from "react-router-dom";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import logo from "../images/logo.png";
 import graph from "../images/graph.png";
-import "./login.scss";
+// import "./login.scss";
 // import "./newLogin.scss";
 import { IoCloseOutline } from "react-icons/io5";
+import { FaGoogle } from "react-icons/fa";
+import { BsApple } from "react-icons/bs";
+import "./newlogin.scss";
 
 interface LoginPageState {
   signIn: boolean;
@@ -98,10 +101,12 @@ export class LoginPage extends Component<{}, LoginPageState> {
               <div className="login-sso">
                 <Link to="/home" className="signin">
                   <h3>Sign in with Apple</h3>
+                  <BsApple />
                 </Link>
 
                 <Link to="/home" className="signin">
                   <h3>Sign in with Google</h3>
+                  <FaGoogle />
                 </Link>
 
                 <div className="signin">

@@ -1,13 +1,17 @@
+@import "../veriables";
 .single-graph {
+  padding-bottom: 2%;
   .back {
     display: flex;
     align-items: center;
     justify-content: start;
-    padding: 20px;
+
+    position: absolute;
+    top: 70px;
+    left: 10px;
     .back-button {
-      color: black;
+      color: $text-light;
       font-size: x-large;
-      padding-left: 20px;
     }
   }
   .graph-text {
@@ -32,54 +36,126 @@
     gap: 20px;
 
     @media (max-width: 768px) {
-      display: flex;
-      flex-direction: column;
+      display: grid;
+      grid-template-columns: auto;
 
       align-items: center;
-      padding: 0 10%;
 
       gap: 20px;
       font-size: x-small;
       column-gap: 20px;
     }
-
     .table {
-      border: 2px solid black;
-      padding: 10px;
-    }
-    table {
-      width: 100%;
-      thead {
-        tr {
-          border: 2px solid black;
-        }
+      font-family: Arial, sans-serif;
+      @media (max-width: 768px) {
+        padding: 20px;
       }
-      tbody {
-        tr {
-          td {
-            border: 2px solid black;
-            margin: 5px;
-          }
-        }
-      }
-    }
-    .chart {
-      border: 2px solid black;
-      column-span: all;
-      p {
-        padding: 10px 10px;
-      }
-      .chart-data {
-        column-span: all;
-        width: 80%;
 
+      p {
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
         @media (max-width: 768px) {
           width: 80%;
         }
+
+        th,
+        td {
+          border: 1px solid #dddddd;
+          text-align: left;
+          padding: 8px;
+        }
+
+        th {
+          background-color: #f2f2f2;
+          font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+          background-color: #f2f2f2;
+        }
       }
     }
+
+    .chart {
+      margin: 20px;
+
+      margin-bottom: 0;
+
+      p {
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+
+      .chart-data {
+        width: auto;
+        height: 300px;
+        border: 2px solid black;
+      }
+
+      @media screen and (max-width: 600px) {
+        .chart-data {
+          height: 200px;
+          border: 2px solid black;
+          padding: 2%;
+        }
+      }
+    }
+
+    // .table {
+    //   border: 2px solid black;
+    //   padding: 10px;
+    // }
+    // table {
+    //   width: 100%;
+    //   thead {
+    //     tr {
+    //       border: 2px solid black;
+    //     }
+    //   }
+    //   tbody {
+    //     tr {
+    //       td {
+    //         border: 2px solid black;
+    //         margin: 5px;
+    //       }
+    //     }
+    //   }
+    // }
+    // .chart {
+    //   border: 2px solid black;
+    //   column-span: all;
+    //   width: 100%;
+    //   p {
+    //     padding: 10px 10px;
+    //   }
+    //   .chart-data {
+    //     column-span: all;
+    //     width: 100%;
+
+    //     @media (max-width: 768px) {
+    //       width: 100%;
+    //     }
+    //   }
+    // }
   }
-  .company-details {
-    padding: 0 5%;
+}
+
+.company-details {
+  border: 1px solid black;
+  padding: 1%;
+  @media (max-width: 768px) {
+    margin: 0 5%;
+    padding: 2%;
+  }
+}
+
+.paragraph {
+  @media (max-width: 768px) {
+    display: none;
   }
 }

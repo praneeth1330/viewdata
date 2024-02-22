@@ -8,7 +8,6 @@ import NavBar from "./NavBar";
 import "./home.scss";
 import { RootState } from "../redux/store";
 import { FaSpinner } from "react-icons/fa";
-import FilterData from "./FilterData";
 
 interface GraphData {
   company_name: string;
@@ -23,10 +22,6 @@ interface HomeProps {
 }
 
 class Homes extends Component<HomeProps> {
-  constructor(props) {
-    super(props);
-    let filteredGraphs = this.props.graphs;
-  }
   componentDidMount() {
     this.props.fetchGraphs();
   }
@@ -42,7 +37,6 @@ class Homes extends Component<HomeProps> {
 
   render() {
     const { loading, graphs } = this.props;
-    console.log("Graphs", graphs);
     if (loading) {
       return (
         <div>
@@ -59,8 +53,6 @@ class Homes extends Component<HomeProps> {
     return (
       <>
         <NavBar />
-        <FilterData />
-
         <div className="graph-page">
           <h3>Displaying the data of the company's Annual Import</h3>
 

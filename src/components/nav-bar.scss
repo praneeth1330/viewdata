@@ -13,28 +13,33 @@ nav {
   z-index: 100;
 
   .logo-img {
+    width: 150px;
     background-color: $primary-color;
     @media (max-width: 768px) {
-      width: 150px;
+      width: 100px;
     }
   }
 
   .search-nav {
     width: 35%;
     display: flex;
-    height: 35px;
+    height: 30px;
     border-radius: 5px;
 
     input {
       width: 100%;
-      background: #fff;
+      background: #e3e6e9;
       outline: none;
       font-size: larger;
       border: 0;
       border-radius: 5px;
+      padding-left: 10px;
 
       &:focus {
-        outline: none;
+        background: #fff;
+      }
+      &::placeholder {
+        color: #a9a9a9;
       }
     }
 
@@ -54,16 +59,16 @@ nav {
 
     .hamburger {
       display: none;
-      width: 40px;
-      height: 40px;
-      cursor: pointer; // Hide the hamburger icon by default
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
 
       @media (max-width: 768px) {
-        display: block; // Show the hamburger icon on smaller screens
+        display: block;
       }
       .cross {
-        width: 40px;
-        height: 40px;
+        width: 30px;
+        height: 30px;
       }
       .larg-profile {
         width: 100%;
@@ -77,7 +82,7 @@ nav {
         width: 100%;
         height: auto;
         position: absolute;
-        top: 60px;
+        top: 50px;
         right: -10px;
         padding-left: 20px;
         background-color: #fff;
@@ -97,7 +102,16 @@ nav {
         @include icons;
         @include profile-icon;
         background-color: #fff;
+        &:hover {
+          p {
+            color: $primary-color;
+          }
+          svg {
+            color: $primary-color;
+          }
+        }
       }
+
       .profile-info {
         @include profile-icon;
         background-color: #fff;
@@ -128,8 +142,8 @@ nav {
     }
     .larg-menu {
       background-color: $primary-color;
-      width: 40px;
-      height: 40px;
+      width: 30px;
+      height: 30px;
       cursor: pointer;
       @media (max-width: 768px) {
         display: none; // Show the hamburger icon on smaller screens
@@ -143,31 +157,28 @@ nav {
 
     .notification {
       background-color: $primary-color;
-      width: 40px;
-      height: 40px;
+      width: 30px;
+      height: 30px;
       cursor: pointer;
     }
 
     .notification-bar {
       background-color: $primary-color;
-      width: 40px;
-      height: 40px;
+      width: 30px;
+      height: 30px;
     }
   }
 }
 
 .display-menu {
   position: absolute;
-  top: 60px;
+  top: 50px;
   width: 200px;
-  right: 0;
-  border-bottom: 2px solid black;
-  border-left: 2px solid black;
-  z-index: 100;
+  right: 20px;
 
-  p {
-    font-size: small;
-  }
+  z-index: 100;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19);
+
   @media (max-width: 768px) {
     display: none; // Show the hamburger icon on smaller screens
   }
@@ -183,12 +194,12 @@ nav {
       justify-content: start;
       align-items: center;
       gap: 20px;
-      height: 50px;
-      border-bottom: 2px solid $text-light;
+      height: 45px;
+      border-bottom: 2px solid #f6f5f5;
       background-color: #fff;
       .img {
-        width: 30px;
-        height: 30px;
+        width: 25px;
+        height: 25px;
         background-color: #fff;
         img {
           width: 100%;
@@ -220,22 +231,39 @@ nav {
       align-items: center;
       justify-content: start;
       gap: 20px;
-      border-bottom: 2px solid $text-light;
+      border-bottom: 2px solid #f6f5f5;
       color: $text-light;
       background-color: #fff;
       cursor: pointer;
+
       p {
         color: black;
         background-color: #fff;
+        font-size: medium;
+        margin: 0;
+        padding: 8px 0;
+      }
+      &:hover p {
+        color: $primary-color;
       }
       .profile-icons-lg {
-        width: 30px;
-        height: 30px;
+        width: 25px;
+        height: 25px;
         background-color: #fff;
+      }
+      &:hover .profile-icons-lg {
+        color: $primary-color;
       }
       .large-icon {
         border-bottom: 0px;
       }
     }
   }
+}
+.nav-icons {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background-color: $primary-color;
 }

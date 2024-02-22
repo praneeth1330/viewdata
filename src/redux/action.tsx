@@ -1,10 +1,9 @@
 import axios from "axios";
 import { Dispatch } from "redux";
-export const UPDATE_SEARCH_QUERY = "UPDATE_SEARCH_QUERY";
 
 export const fetchGraphs = () => {
   return async (dispatch: Dispatch) => {
-    dispatch({ type: "FETCH_GRAPHS_REQUEST" }); // Dispatch action to indicate data fetching started
+    dispatch({ type: "FETCH_GRAPHS_REQUEST" });
 
     const apiURLs = [
       "https://api.data.gov.in/resource/af3ce5b4-a469-4a0d-9e55-d2faa054afbd?api-key=579b464db66ec23bdd000001818659bdf1f54b0e51a76cec8f25aee7&format=json",
@@ -16,7 +15,7 @@ export const fetchGraphs = () => {
       "https://api.data.gov.in/resource/a74d1f0f-ab3e-4d61-ad15-71c9233e7393?api-key=579b464db66ec23bdd000001cdd3946e44ce4aad7209ff7b23ac571b&format=json",
       "https://api.data.gov.in/resource/d06978c6-62c2-43a7-9876-1d6e0f30a8e2?api-key=579b464db66ec23bdd000001cdd3946e44ce4aad7209ff7b23ac571b&format=json",
       "https://api.data.gov.in/resource/36af6f80-af7a-4c94-83ec-b56e38ae384d?api-key=579b464db66ec23bdd000001cdd3946e44ce4aad7209ff7b23ac571b&format=json",
-      "https://api.data.gov.in/resource/36af6f80-af7a-4c94-83ec-b56e38ae384d?api-key=579b464db66ec23bdd000001cdd3946e44ce4aad7209ff7b23ac571b&format=json",
+      "https://api.data.gov.in/resource/f82df13f-c7dd-4624-acb3-9c5171a462e3?api-key=579b464db66ec23bdd000001818659bdf1f54b0e51a76cec8f25aee7&format=json",
       "https://api.data.gov.in/resource/0d680b33-42d4-4591-a897-7cee09703966?api-key=579b464db66ec23bdd000001cdd3946e44ce4aad7209ff7b23ac571b&format=json",
     ];
 
@@ -32,11 +31,6 @@ export const fetchGraphs = () => {
     }
   };
 };
-
-export const updateSearchQuery = (query: any) => ({
-  type: UPDATE_SEARCH_QUERY,
-  payload: query,
-});
 
 export const addGraphs = (graphs: any[]) => ({
   type: "ADD_GRAPHS",
