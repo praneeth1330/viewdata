@@ -77,14 +77,20 @@
         margin: 20px;
         margin-bottom: 8px;
         cursor: pointer; }
+        .signup-container .signup-left-container .cards-login .login-sso .signin:hover {
+          background: #e7e6e6; }
         @media (max-width: 768px) {
           .signup-container .signup-left-container .cards-login .login-sso .signin {
             width: 95%; } }
         .signup-container .signup-left-container .cards-login .login-sso .signin h3:visited {
           margin: 0;
           color: black; }
+        .signup-container .signup-left-container .cards-login .login-sso .signin:hover h3 {
+          background: #e7e6e6; }
         .signup-container .signup-left-container .cards-login .login-sso .signin h3 {
           width: 170px; }
+        .signup-container .signup-left-container .cards-login .login-sso .signin:hover .sso-icon {
+          background: #e7e6e6; }
     .signup-container .signup-left-container .signin-email {
       margin: 0 10%;
       padding: 0 2%;
@@ -509,6 +515,9 @@ nav {
         transition: border-color 0.3s ease-in-out;
         box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.02);
         object-fit: cover; }
+        @media (max-width: 768px) {
+          .allmainGraphs .select .select-dropdown select {
+            font-size: x-small; } }
       .allmainGraphs .select .select-dropdown::after {
         content: "\25bc";
         position: absolute;
