@@ -4,8 +4,9 @@ import { Link, useParams } from "react-router-dom";
 import Chart from "react-apexcharts";
 import NavBar from "./NavBar";
 import { IoArrowBackOutline } from "react-icons/io5";
-import "./graphdetails.scss";
+
 import { MdOutlineArrowBackIosNew } from "react-icons/md";
+import "./graph.scss";
 
 interface GraphData {
   company_name: string;

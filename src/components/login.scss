@@ -1,8 +1,5 @@
-@import "../veriables";
 @import "../mixin";
-@media (max-width: 768px) {
-}
-
+@import "../veriables";
 .signup-container {
   width: 100%;
   display: grid;
@@ -14,16 +11,12 @@
   @media (max-width: 768px) {
     grid-template-columns: 100%;
   }
-  @media (max-width: 320px) {
-  }
-
   .signup-left-container {
     @include flx-c();
     padding: 10% 0;
     border: 1px solid $text-light;
     @media (max-width: 768px) {
     }
-
     .uper-text {
       @include flx-c();
       text-align: start;
@@ -32,6 +25,21 @@
       align-items: start;
       @media (max-width: 768px) {
         padding: 0 5%;
+      }
+      .header-txt {
+        display: flex;
+        align-items: center;
+        justify-content: start;
+        gap: 10px;
+        text-align: start;
+        h1 {
+          @media (max-width: 768px) {
+            font-size: x-large;
+          }
+        }
+        img {
+          width: 45%;
+        }
       }
       .lorem {
         color: $text-light;
@@ -47,21 +55,46 @@
         font-size: medium;
         text-align: start;
       }
-
-      .header-txt {
-        display: flex;
+      p {
+      }
+    }
+    .cards-login {
+      .login-sso {
+        @include flx-c();
+        justify-content: center;
         align-items: center;
-        justify-content: start;
-        gap: 10px;
-        text-align: start;
-        h1 {
-          @media (max-width: 768px) {
-            font-size: x-large;
-          }
+        gap: 5px;
+        border: 1px solid $text-light;
+        padding: 10% 0;
+        margin: 0 10%;
+        @media (max-width: 768px) {
+          gap: 10px;
+          margin: 0 5%;
         }
+        .signin {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 95%;
+          text-decoration: none;
+          color: inherit;
+          // padding: 5px 5px;
+          gap: 9px;
+          border: 1px solid $text-light;
+          margin: 20px;
+          margin-bottom: 8px;
 
-        img {
-          width: 45%;
+          @media (max-width: 768px) {
+            width: 95%;
+          }
+          h3:visited {
+            margin: 0;
+            color: black;
+          }
+
+          cursor: pointer;
+          h3 {
+          }
         }
       }
     }
@@ -74,7 +107,17 @@
       @media (max-width: 768px) {
         margin: 0 5%;
       }
-
+      .cross-button {
+        display: flex;
+        align-items: center;
+        justify-content: end;
+        font-size: x-large;
+        .backarrow-login {
+          font-size: x-large;
+          cursor: pointer;
+          text-align: end;
+        }
+      }
       form {
         @include flx-c();
 
@@ -82,38 +125,37 @@
         justify-content: start;
         text-align: start;
         gap: 20px;
-      }
-      .email {
-        @include flx-c();
-        label {
-          padding: 5px 5px;
+        .email {
+          @include flx-c();
+          label {
+            padding: 5px 5px;
+          }
+          input {
+            @include width();
+            text-align: start;
+          }
         }
-        input {
-          @include width();
-          text-align: start;
+        .password {
+          @include flx-c();
+          label {
+            padding: 5px 5px;
+          }
+          input {
+            @include width();
+            text-align: start;
+          }
         }
-      }
-      .password {
-        @include flx-c();
-        label {
-          padding: 5px 5px;
-        }
-        input {
-          @include width();
-          text-align: start;
-        }
-      }
-      .signin-btn {
-        @include flx-c();
-
-        button {
-          @include width();
-          margin-top: 20px;
-          cursor: pointer;
-          &:hover {
-            background-color: $primary-color;
-            color: white;
-            border: 2px solid white;
+        .signin-btn {
+          @include flx-c();
+          button {
+            @include width();
+            margin-top: 20px;
+            cursor: pointer;
+            &:hover {
+              background-color: $primary-color;
+              color: white;
+              border: 2px solid white;
+            }
           }
         }
       }
@@ -131,7 +173,6 @@
             cursor: pointer;
           }
         }
-
         p {
           color: $primary-color;
         }
@@ -139,63 +180,12 @@
     }
   }
 }
-.login-sso {
-  @include flx-c();
-  justify-content: center;
-  align-items: center;
-  gap: 5px;
-  border: 1px solid $text-light;
-  padding: 10% 0;
-  margin: 0 10%;
-  @media (max-width: 768px) {
-    gap: 10px;
-    margin: 0 5%;
-  }
-
-  .signin {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 95%;
-    text-decoration: none;
-    color: inherit;
-    // padding: 5px 5px;
-    gap: 10px;
-    border: 1px solid $text-light;
-    margin: 20px;
-    margin-bottom: 10px;
-
-    @media (max-width: 768px) {
-      width: 95%;
-    }
-    h3:visited {
-      margin: 0;
-      color: black;
-    }
-
-    cursor: pointer;
-    h3 {
-    }
-  }
-}
-
-.backarrow-login {
-  font-size: x-large;
-  cursor: pointer;
-  text-align: end;
-}
 .signup-right-container {
   @include flx-c();
   padding: 10% 0;
   background: #fff;
   @media (max-width: 768px) {
     display: none;
-  }
-  h2 {
-    background: #fff;
-  }
-  p {
-    background: #fff;
   }
   .left-text {
     @include flx-c();
@@ -205,23 +195,18 @@
     p {
       color: $text-light;
     }
+    h2 {
+      background: #fff;
+    }
   }
   .left-image {
     text-align: start;
     padding: 0 10%;
     @include flx-c();
     background: #fff;
-
     img {
       padding: 10%;
       background: #fff;
     }
   }
-}
-
-.cross-button {
-  display: flex;
-  align-items: center;
-  justify-content: end;
-  font-size: x-large;
 }

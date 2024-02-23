@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "./nav-bar.scss";
+
 import { FaRegUserCircle } from "react-icons/fa";
 import { IoIosNotificationsOutline } from "react-icons/io";
 import { RxHamburgerMenu } from "react-icons/rx";

@@ -1,14 +1,13 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { IoMdArrowRoundBack } from "react-icons/io";
+
 import logo from "../images/logo.png";
 import graph from "../images/graph.png";
-// import "./login.scss";
-// import "./newLogin.scss";
+
 import { IoCloseOutline } from "react-icons/io5";
 import { FaGoogle } from "react-icons/fa";
 import { BsApple } from "react-icons/bs";
-import "./newlogin.scss";
+import "./login.scss";
 
 interface LoginPageState {
   signIn: boolean;

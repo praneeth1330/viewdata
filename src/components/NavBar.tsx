@@ -1,10 +1,8 @@
 import React, { Component } from "react";
 import logo_nav from "../images/nav-logo.png";
-// import "./nav-bar.scss";
+
 import { FaRegUserCircle } from "react-icons/fa";
-import { IoIosNotificationsOutline } from "react-icons/io";
-import { RxHamburgerMenu } from "react-icons/rx";
-import { RxCross1 } from "react-icons/rx";
+
 import Profile from "../images/profile.jpg";
 import { RiUserSharedLine } from "react-icons/ri";
 import { LiaUserEditSolid } from "react-icons/lia";
@@ -14,10 +12,16 @@ import { TbSettings } from "react-icons/tb";
 import { LuHelpCircle } from "react-icons/lu";
 import { BiLogOut } from "react-icons/bi";
 import ProfileMenu from "./ProfileMenu";
+
+import { IoIosNotificationsOutline } from "react-icons/io";
+import { RxHamburgerMenu } from "react-icons/rx";
+import { RxCross1 } from "react-icons/rx";
+
 import { Link } from "react-router-dom";
 import { MdOutlineNotificationsNone } from "react-icons/md";
 import { TbUserEdit } from "react-icons/tb";
-import "./newNav.scss";
+
+import "./nav-bar.scss";
 
 export class NavBar extends Component {
   state = {

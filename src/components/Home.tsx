@@ -5,11 +5,11 @@ import { fetchGraphs } from "../redux/action";
 import Chart from "react-apexcharts";
 import { Link } from "react-router-dom";
 import NavBar from "./NavBar";
-// import "./home.scss";
+
 import { RootState } from "../redux/store";
 import { FaSpinner } from "react-icons/fa";
 
-import "./newhome.scss";
+import "./home.scss";
 
 interface HomeProps {
   loading: boolean;
