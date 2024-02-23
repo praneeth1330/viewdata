@@ -102,17 +102,17 @@ export class LoginPage extends Component<{}, LoginPageState> {
                 <div className="login-sso">
                   <Link to="/home" className="signin">
                     <h3>Sign in with Apple</h3>
-                    <BsApple />
+                    <BsApple className="sso-icon" />
                   </Link>
                   <Link to="/home" className="signin">
                     <h3>Sign in with Google</h3>
-                    <FaGoogle />
+                    <FaGoogle className="sso-icon" />
                   </Link>
 
                   <div className="signin">
                     <h3 onClick={this.cardChange}>Sign in with Email </h3>
 
-                    <MdEmail />
+                    <MdEmail className="sso-icon" />
                   </div>
                 </div>
               </div>
