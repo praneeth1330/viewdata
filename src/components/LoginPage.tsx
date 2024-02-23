@@ -7,6 +7,7 @@ import graph from "../images/graph.png";
 import { IoCloseOutline } from "react-icons/io5";
 import { FaGoogle } from "react-icons/fa";
 import { BsApple } from "react-icons/bs";
+import { MdEmail } from "react-icons/md";
 import "./login.scss";
 
 interface LoginPageState {
@@ -95,78 +96,80 @@ export class LoginPage extends Component<{}, LoginPageState> {
             <h3>Please sign in to continue </h3>
             <p>By Signing you will access best features</p>
           </div>
-          {signIn ? (
-            <div className="cards-login">
-              <div className="login-sso">
-                <Link to="/home" className="signin">
-                  <h3>Sign in with Apple</h3>
-                  <BsApple />
-                </Link>
+          <div className="card">
+            {signIn ? (
+              <div className="cards-login">
+                <div className="login-sso">
+                  <Link to="/home" className="signin">
+                    <h3>Sign in with Apple</h3>
+                    <BsApple />
+                  </Link>
+                  <Link to="/home" className="signin">
+                    <h3>Sign in with Google</h3>
+                    <FaGoogle />
+                  </Link>
 
-                <Link to="/home" className="signin">
-                  <h3>Sign in with Google</h3>
-                  <FaGoogle />
-                </Link>
+                  <div className="signin">
+                    <h3 onClick={this.cardChange}>Sign in with Email </h3>
 
-                <div className="signin">
-                  <h3 onClick={this.cardChange}>Sign in with Email</h3>
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div className="signin-email">
-              <div className="cross-button">
-                <IoCloseOutline
-                  className="backarrow-login"
-                  onClick={this.cardChange}
-                />
-              </div>
-              <form onSubmit={this.handleSubmit}>
-                <div className="email">
-                  <label htmlFor="email">Email</label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={email}
-                    onChange={this.handleInputChange}
-                  />
-                  <div className="error" style={{ color: "red" }}>
-                    {emailError}
+                    <MdEmail />
                   </div>
                 </div>
-                <div className="password">
-                  <label htmlFor="password">Password</label>
-                  <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    value={password}
-                    onChange={this.handleInputChange}
-                  />
-                  <div className="error" style={{ color: "red" }}>
-                    {passwordError}
-                  </div>
-                </div>
-
-                <div className="signin-btn">
-                  <button type="submit">Sign In</button>
-                </div>
-              </form>
-              <div className="remember-forgot">
-                <div className="remember-me">
-                  <input type="checkbox" name="remember-me" id="remember-me" />
-                  <label htmlFor="remember-me">Remember Me</label>
-                </div>
-                <p>Forgot password</p>
               </div>
-              {/* <div className="sign-up">
-                <p>
-                  Don't have a account? <span>Signup</span>
-                </p>
-              </div> */}
-            </div>
-          )}
+            ) : (
+              <div className="signin-email">
+                <div className="cross-button">
+                  <IoCloseOutline
+                    className="backarrow-login"
+                    onClick={this.cardChange}
+                  />
+                </div>
+                <form onSubmit={this.handleSubmit}>
+                  <div className="email">
+                    <label htmlFor="email">Email</label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      value={email}
+                      onChange={this.handleInputChange}
+                    />
+                    <div className="error" style={{ color: "red" }}>
+                      {emailError}
+                    </div>
+                  </div>
+                  <div className="password">
+                    <label htmlFor="password">Password</label>
+                    <input
+                      type="password"
+                      id="password"
+                      name="password"
+                      value={password}
+                      onChange={this.handleInputChange}
+                    />
+                    <div className="error" style={{ color: "red" }}>
+                      {passwordError}
+                    </div>
+                  </div>
+
+                  <div className="signin-btn">
+                    <button type="submit">Sign In</button>
+                  </div>
+                </form>
+                <div className="remember-forgot">
+                  <div className="remember-me">
+                    <input
+                      type="checkbox"
+                      name="remember-me"
+                      id="remember-me"
+                    />
+                    <label htmlFor="remember-me">Remember Me</label>
+                  </div>
+                  <p>Forgot password</p>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
         <div className="signup-right-container">
           <div className="left-text">

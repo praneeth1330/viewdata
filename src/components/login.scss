@@ -65,10 +65,11 @@
         align-items: center;
         gap: 5px;
         border: 1px solid $text-light;
-        padding: 10% 0;
+
         margin: 0 10%;
+        height: 450px;
         @media (max-width: 768px) {
-          gap: 10px;
+          gap: 5px;
           margin: 0 5%;
         }
         .signin {
@@ -79,7 +80,7 @@
           text-decoration: none;
           color: inherit;
           // padding: 5px 5px;
-          gap: 9px;
+          gap: 10px;
           border: 1px solid $text-light;
           margin: 20px;
           margin-bottom: 8px;
@@ -94,16 +95,21 @@
 
           cursor: pointer;
           h3 {
+            width: 170px;
           }
         }
       }
     }
     .signin-email {
       margin: 0 10%;
-      padding: 2%;
+      padding: 0 2%;
       color: black;
       text-decoration: none;
       border: 1px solid $text-light;
+      height: 450px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
       @media (max-width: 768px) {
         margin: 0 5%;
       }

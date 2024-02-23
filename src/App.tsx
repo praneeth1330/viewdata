@@ -7,6 +7,7 @@ import store from "./redux/store";
 import LoginPage from "./components/LoginPage";
 import Home from "./components/Home";
 import NavBar from "./components/NavBar";
+import Login from "./components/Login";
 
 import Graph from "./components/Graph";
 
