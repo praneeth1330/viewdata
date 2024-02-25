@@ -24,10 +24,10 @@ export const fetchGraphs = () => {
       const chartsData = responses.map((response) => response.data.records);
 
       dispatch(addGraphs(chartsData));
-      dispatch({ type: "FETCH_GRAPHS_SUCCESS" }); // Dispatch action to indicate data fetching success
+      dispatch({ type: "FETCH_GRAPHS_SUCCESS" });
     } catch (error) {
       console.error("Error fetching data:", error);
-      dispatch({ type: "FETCH_GRAPHS_FAILURE" }); // Dispatch action to indicate data fetching failure
+      dispatch({ type: "FETCH_GRAPHS_FAILURE" });
     }
   };
 };
