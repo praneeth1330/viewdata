@@ -1,23 +1,39 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom"; // Import withRouter
 
+// Importing images
 import logo from "../images/logo.png";
 import graph from "../images/graph.png";
 
+// Importing dependencies
+import { jwtDecode } from "jwt-decode";
 import { IoCloseOutline } from "react-icons/io5";
 import { FaGoogle } from "react-icons/fa";
 import { BsApple } from "react-icons/bs";
 import { MdEmail } from "react-icons/md";
 import "./login.scss";
 
+// Importing Firebase authentication and configuration
+import { auth, provider } from "../config";
+import { signInWithPopup } from "firebase/auth";
+
+// Importing Redux related functionalities
+import { storeDecodedToken } from "../redux/action";
+import { connect } from "react-redux";
+
+// Defining state interface for LoginPage component
 interface LoginPageState {
   signIn: boolean;
   email: string;
   password: string;
   emailError: string;
   passwordError: string;
+  value: any;
+  accessToken: any;
+  decode: any;
 }
 
+// LoginPage component
 export class LoginPage extends Component<{}, LoginPageState> {
   constructor(props: {}) {
     super(props);
@@ -27,22 +43,28 @@ export class LoginPage extends Component<{}, LoginPageState> {
       password: "",
       emailError: "",
       passwordError: "",
+      value: "",
+      accessToken: "",
+      decode: [],
     };
   }
 
+  // Function to switch between sign-in methods
   cardChange = () => {
     this.setState((prevState) => ({
       signIn: !prevState.signIn,
     }));
   };
 
+  // Function to handle input changes
   handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     this.setState({
       [name]: value,
-    });
+    } as Pick<LoginPageState, keyof LoginPageState>);
   };
 
+  // Function to validate form inputs
   validateForm = () => {
     let isValid = true;
     const { email, password } = this.state;
@@ -66,10 +88,33 @@ export class LoginPage extends Component<{}, LoginPageState> {
     return isValid;
   };
 
+  // Function to handle Google sign-in
+  handleGoogleSignIn = () => {
+    signInWithPopup(auth, provider)
+      .then(() => {
+        const accessToken = auth.currentUser.stsTokenManager.accessToken;
+        console.log("accesstoken", accessToken);
+        // Update the component state with the access token
+        this.setState({ accessToken });
+
+        try {
+          const decoded = jwtDecode(accessToken);
+          this.setState({ decode: decoded });
+          this.props.storeDecodedToken(decoded);
+          console.log("decoded token", decoded);
+        } catch (error) {
+          console.error("Error decoding token:", error);
+        }
+      })
+      .catch((error) => {
+        console.error("Error signing in with Google:", error);
+      });
+  };
+
+  // Function to handle form submission
   handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (this.validateForm()) {
-      // Form is valid, you can proceed with sign-in logic here
       console.log("Form is valid, ready to submit");
     } else {
       console.log("Form is invalid");
@@ -77,16 +122,19 @@ export class LoginPage extends Component<{}, LoginPageState> {
   };
 
   render() {
-    const { signIn, email, password, emailError, passwordError } = this.state;
+    const { signIn, email, password, emailError, passwordError, decode } =
+      this.state;
 
     return (
       <div className="signup-container">
+        {/* Left side of the page */}
         <div className="signup-left-container">
           <div className="uper-text">
             <div className="header-txt">
               <h1>Welcome to </h1>
               <img src={logo} alt="" />
             </div>
+
             <p className="lorem">
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae quas
               beatae minima. Non minima itaque exercitationem ut possimus
@@ -96,28 +144,39 @@ export class LoginPage extends Component<{}, LoginPageState> {
             <h3>Please sign in to continue </h3>
             <p>By Signing you will access best features</p>
           </div>
+
           <div className="card">
+            {/* Conditionally rendering sign-in methods */}
             {signIn ? (
               <div className="cards-login">
                 <div className="login-sso">
-                  <Link to="/home" className="signin">
-                    <h3>Sign in with Apple</h3>
-                    <BsApple className="sso-icon" />
-                  </Link>
-                  <Link to="/home" className="signin">
-                    <h3>Sign in with Google</h3>
-                    <FaGoogle className="sso-icon" />
-                  </Link>
+                  <div className="signin ">
+                    <button onClick={this.handleGoogleSignIn}>
+                      <FaGoogle className="sso-icon" />
+                      Sign in with Google
+                    </button>
+                  </div>
 
                   <div className="signin">
-                    <h3 onClick={this.cardChange}>Sign in with Email </h3>
+                    <Link to="/home">
+                      <button>
+                        <BsApple className="sso-icon" />
+                        Sign in with Apple
+                      </button>
+                    </Link>
+                  </div>
 
-                    <MdEmail className="sso-icon" />
+                  <div className="signin">
+                    <button onClick={this.cardChange}>
+                      <MdEmail className="sso-icon" />
+                      Sign in with Email{" "}
+                    </button>
                   </div>
                 </div>
               </div>
             ) : (
               <div className="signin-email">
+                {/* Form for email sign-in */}
                 <div className="cross-button">
                   <IoCloseOutline
                     className="backarrow-login"
@@ -171,6 +230,8 @@ export class LoginPage extends Component<{}, LoginPageState> {
             )}
           </div>
         </div>
+
+        {/* Right side of the page */}
         <div className="signup-right-container">
           <div className="left-text">
             <h2>Simplest way to view your data</h2>
@@ -188,4 +249,13 @@ export class LoginPage extends Component<{}, LoginPageState> {
   }
 }
 
-export default LoginPage;
+// Mapping dispatch to props for accessing storeDecodedToken action
+const mapDispatchToProps = (dispatch) => {
+  return {
+    storeDecodedToken: (decodedToken) =>
+      dispatch(storeDecodedToken(decodedToken)),
+  };
+};
+
+// Connecting LoginPage component to Redux store
+export default connect(null, mapDispatchToProps)(LoginPage);

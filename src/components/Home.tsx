@@ -1,22 +1,22 @@
 import React, { Component, ChangeEvent } from "react";
 import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { fetchGraphs } from "../redux/action";
+import { fetchGraphs, filteredGraphs } from "../redux/action"; // Importing Redux actions
 import Chart from "react-apexcharts";
 import { Link } from "react-router-dom";
 import NavBar from "./NavBar";
-
 import { RootState } from "../redux/store";
 import { FaSpinner } from "react-icons/fa";
-
 import "./home.scss";
 
+// Define the props for the Home component
 interface HomeProps {
   loading: boolean;
-  graphs: GraphData[];
+  graphs: GraphData[]; // Assuming GraphData is defined elsewhere
   fetchGraphs: () => void;
+  filteredGraphs: (graphs: GraphData[]) => void;
 }
 
+// Define the state for the Home component
 interface State {
   selectedState: string;
 }
@@ -27,13 +27,28 @@ class Home extends Component<HomeProps, State> {
   };
 
   componentDidMount() {
-    this.props.fetchGraphs();
+    this.props.fetchGraphs(); // Fetch graphs data when component mounts
   }
 
+  // Handler for state change in the dropdown
   handleStateChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    this.setState({ selectedState: event.target.value });
+    const selectedState = event.target.value;
+    this.setState({ selectedState }, () => {
+      this.filterGraphs(selectedState); // Filter graphs based on selected state
+    });
   };
 
+  // Filter graphs based on the selected state
+  filterGraphs = (selectedState: string) => {
+    const { graphs, filteredGraphs } = this.props;
+    const filteredData = graphs.filter(
+      (graph) => graph[0].registered_state === selectedState
+    );
+    filteredGraphs(filteredData); // Dispatch filtered graphs action
+    console.log("store data", filteredData); // Log filtered data
+  };
+
+  // Function to shuffle colors randomly
   shuffleColors = () => {
     const colors = ["#74E291", "#40A2E3", "#D04848", "#FDE767"];
     for (let i = colors.length - 1; i > 0; i--) {
@@ -47,34 +62,32 @@ class Home extends Component<HomeProps, State> {
     const { loading, graphs } = this.props;
     const { selectedState } = this.state;
 
-    console.log("selected", selectedState);
-
+    // If data is still loading, displaying loading spinner
     if (loading) {
       return (
         <div>
           <NavBar />
-          <div
-            className="loader"
-            // style={{ textAlign: "center", marginTop: "50px" }}
-          >
+          <div className="loader">
             <FaSpinner className="spinner" /> <h1>Loading...</h1>
           </div>
         </div>
       );
     }
 
+    // Filtering graphs based on selected state
     const filteredGraphs = graphs.filter(
       (graph) => graph[0].registered_state === selectedState
     );
+    const randomMap = Math.random() > 0.5 ? "line" : "bar";
 
     return (
       <>
         <NavBar />
-
         <div className="allmainGraphs">
           <div className="select">
             <h3>Displaying the data of the company's Annual Import</h3>
             <div className="select-dropdown">
+              {/* Dropdown to select state */}
               <select
                 name="stateSelector"
                 id="stateSelector"
@@ -82,9 +95,10 @@ class Home extends Component<HomeProps, State> {
                 onChange={this.handleStateChange}
               >
                 <option value="">Select a state</option>
+                {/* Mapping through all graphs to populate dropdown */}
                 {graphs.map((graph, index) => (
                   <option key={index} value={graph[0].registered_state}>
-                    {graph[0].registered_state}
+                    {[...new Set(graph.map((state) => state.registered_state))]}
                   </option>
                 ))}
               </select>
@@ -92,15 +106,17 @@ class Home extends Component<HomeProps, State> {
           </div>
           <div className="graph-page">
             <div className="chart-display">
+              {/* Rendering filtered graphs */}
               {filteredGraphs.length > 0 ? (
                 filteredGraphs.map((filteredGraph, index) => (
                   <div key={index} className="main-charts">
                     <Link
-                      to={`/graph-details/${index}`}
+                      to={`/graph`}
                       state={{ graphData: filteredGraph }}
                       style={{ textDecoration: "none" }}
                     >
                       <div className="chart-state">
+                        {/* Rendering chart for each filtered graph */}
                         <Chart
                           options={{
                             chart: {
@@ -121,9 +137,8 @@ class Home extends Component<HomeProps, State> {
                               ),
                             },
                           ]}
-                          type={Math.random() < 0.5 ? "line" : "bar"}
-                          // width={700}
-                          class="single-chart"
+                          type={randomMap}
+                          className="single-chart"
                         />
                       </div>
                       <h5 style={{ margin: 0 }}>
@@ -135,50 +150,55 @@ class Home extends Component<HomeProps, State> {
               ) : (
                 <div className="allgraphs">
                   <div className="graphs-select">
-                    {graphs.map((data, index) => (
-                      <div className="main-charts" key={index}>
-                        <Link
-                          to={`/graph-details/${index}`}
-                          state={{ graphData: data }}
-                          style={{ textDecoration: "none" }}
-                        >
-                          <div className="chart-home">
-                            <Chart
-                              options={{
-                                chart: {
-                                  id: `basic-bar-${index}`,
-                                  foreColor: this.shuffleColors(),
-                                },
-
-                                xaxis: {
-                                  categories: data?.map((record: any) =>
-                                    record.company_name.slice(0, 5)
-                                  ),
-                                },
-                                colors: this.shuffleColors(),
-                              }}
-                              series={[
-                                {
-                                  name: `series-${index}`,
-                                  data: data?.map(
-                                    (record: any) => record.paidup_capital
-                                  ),
-                                },
+                    {/* Rendering all graphs */}
+                    {graphs.map((data, index) => {
+                      const randomMap = Math.random() > 0.5 ? "line" : "bar";
+                      return (
+                        <div className="main-charts" key={index}>
+                          <Link
+                            to={`/graph-details/${index}`}
+                            state={{ graphData: data }}
+                            randomMap={randomMap}
+                            style={{ textDecoration: "none" }}
+                          >
+                            <div className="chart-home">
+                              {/* Rendering chart for each graph */}
+                              <Chart
+                                options={{
+                                  chart: {
+                                    id: `basic-bar-${index}`,
+                                    foreColor: this.shuffleColors(),
+                                  },
+                                  xaxis: {
+                                    categories: data?.map((record: any) =>
+                                      record.company_name.slice(0, 5)
+                                    ),
+                                  },
+                                  colors: this.shuffleColors(),
+                                }}
+                                series={[
+                                  {
+                                    name: `series-${index}`,
+                                    data: data?.map(
+                                      (record: any) => record.paidup_capital
+                                    ),
+                                  },
+                                ]}
+                                type={randomMap}
+                                className="chart-single"
+                              />
+                            </div>
+                            <h5 style={{ margin: 0 }}>
+                              {[
+                                ...new Set(
+                                  data.map((state) => state.registered_state)
+                                ),
                               ]}
-                              type={Math.random() < 0.5 ? "line" : "bar"}
-                              class="chart-single"
-                            />
-                          </div>
-                          <h5 style={{ margin: 0 }}>
-                            {[
-                              ...new Set(
-                                data.map((state) => state.registered_state)
-                              ),
-                            ]}
-                          </h5>
-                        </Link>
-                      </div>
-                    ))}
+                            </h5>
+                          </Link>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               )}
@@ -190,13 +210,17 @@ class Home extends Component<HomeProps, State> {
   }
 }
 
+// Maping Redux state to component props
 const mapStateToProps = (state: RootState) => ({
   graphs: state.graphs.graphs,
   loading: state.graphs.loading,
 });
 
+// Maping Redux dispatch actions to component props
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   fetchGraphs: () => dispatch(fetchGraphs()),
+  filteredGraphs: (graphs: GraphData[]) => dispatch(filteredGraphs(graphs)), // Added dispatch for filtered graphs
 });
 
+// Connecting the component to Redux store
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

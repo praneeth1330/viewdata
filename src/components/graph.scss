@@ -2,6 +2,7 @@
 @import "../veriables";
 .single-graph {
   padding-bottom: 2%;
+  margin-top: 60px;
   .graph-details-page {
     .back {
       display: flex;
@@ -45,9 +46,10 @@
       }
 
       .chart {
-        margin: 20px;
-
         margin-bottom: 0;
+        @media (max-width: 768px) {
+          margin: 0 20px;
+        }
 
         p {
           font-weight: bold;

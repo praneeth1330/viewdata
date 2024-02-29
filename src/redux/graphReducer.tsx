@@ -29,6 +29,7 @@ const graphsReducer = (
         ...state,
         loading: false,
       };
+
     default:
       return state;
   }

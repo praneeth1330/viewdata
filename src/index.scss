@@ -8,3 +8,23 @@ body {
   padding: 0;
   box-sizing: border-box;
 }
+
+.active {
+  color: green;
+}
+.inactive {
+  color: red;
+}
+
+a {
+  text-decoration: none !important;
+  border: 0px !important;
+  outline: none;
+  border-width: 0px;
+  outline-width: 0px;
+  border-bottom: none;
+}
+
+th {
+  cursor: pointer;
+}
