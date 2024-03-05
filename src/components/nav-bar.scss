@@ -295,3 +295,23 @@ nav {
   background-color: $primary-color;
   margin: 0%;
 }
+
+.search-recommendations {
+  position: fixed;
+  top: 50px;
+  left: 35%;
+  // width: 100%;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+// .search-recommendations {
+//   display: none;
+// }
+
+// .search-recommendations.show {
+//   display: flex;
+// }

@@ -72,32 +72,6 @@ class NavBar extends Component {
     console.log("Search Results:", searchResults);
   };
 
-  // renderSearchRecommendations = () => {
-  //   const { search } = this.state;
-  //   const { graphs } = this.props;
-  //   const regex = new RegExp(search, "i");
-  //   const searchResults = graphs.filter(
-  //     (item) =>
-  //       regex.test(item[0].registered_state) || regex.test(item.description)
-  //   );
-  //   console.log("search filter", searchResults);
-
-  //   if (searchResults.length > 0) {
-  //     return (
-  //       <div className="search-recommendations">
-  //         <ul>
-  //           {searchResults.map((result, index) => (
-  //             <li key={index}>
-  //               {[...new Set(result.map((state) => state.registered_state))]}
-  //             </li>
-  //           ))}
-  //         </ul>
-  //       </div>
-  //     );
-  //   } else {
-  //     return null;
-  //   }
-  // };
   renderSearchRecommendations = () => {
     const { search } = this.state;
     const { graphs } = this.props;
@@ -106,10 +80,10 @@ class NavBar extends Component {
       (item) =>
         regex.test(item[0].registered_state) || regex.test(item.description)
     );
+    console.log("search filter", searchResults);
 
-    if (search.trim() !== "") {
-      // Check if search query is not empty
-      return searchResults.length > 0 ? (
+    if (searchResults.length > 0) {
+      return (
         <div className="search-recommendations">
           <ul>
             {searchResults.map((result, index) => (
@@ -119,9 +93,9 @@ class NavBar extends Component {
             ))}
           </ul>
         </div>
-      ) : null;
+      );
     } else {
-      return null; // Return null when search query is empty
+      return null;
     }
   };
 

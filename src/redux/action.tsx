@@ -2,6 +2,7 @@ import axios from "axios";
 import { Dispatch } from "redux";
 export const FILTERED_GRAPHS = "FILTERED_GRAPHS";
 export const STORE_DECODED_TOKEN = "STORE_DECODED_TOKEN";
+export const SEARCH_RESULT = "SEARCH_RESULT";
 
 export const fetchGraphs = () => {
   return async (dispatch: Dispatch) => {
@@ -48,5 +49,11 @@ export const storeDecodedToken = (decodedToken) => {
   return {
     type: STORE_DECODED_TOKEN,
     payload: decodedToken,
+  };
+};
+export const searchQuery = (search) => {
+  return {
+    type: SEARCH_RESULT,
+    payload: search,
   };
 };

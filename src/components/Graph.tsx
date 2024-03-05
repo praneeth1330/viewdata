@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { Link, useParams } from "react-router-dom";
-import Chart from "react-apexcharts";
+import { Link, useParams, useSearchParams } from "react-router-dom";
+import Chart, { ApexChartType } from "react-apexcharts";
 import NavBar from "./NavBar";
 import { MdOutlineArrowBackIosNew } from "react-icons/md";
 import "./graph.scss";
@@ -29,11 +29,23 @@ interface RouteParams {
 
 interface Props {
   graphs: GraphData[][];
+  randomMap: string;
 }
+
+type IChartType = "line" | "bar";
+
 // Functional component for displaying graph details
-const Graph: React.FC<Props> = ({ graphs, randomMap }) => {
+const Graph: React.FC<Props> = ({ graphs }) => {
   //Geting Url parameter
   const { id } = useParams<RouteParams>();
+  const [searchParams] = useSearchParams();
+  const mapType = searchParams.get("mapType");
+  const [searchColor] = useSearchParams();
+  const color = searchColor.get("color");
+  const decoded = decodeURIComponent(color);
+
+  console.log(mapType);
+  console.log("color", decoded);
 
   // State variables for sorting
   const [sortColumn, setSortColumn] = useState<keyof GraphData | null>(null);
@@ -99,6 +111,7 @@ const Graph: React.FC<Props> = ({ graphs, randomMap }) => {
                     record.company_name.slice(0, 10)
                   ),
                 },
+                colors: [color],
               }}
               series={[
                 {
@@ -106,7 +119,7 @@ const Graph: React.FC<Props> = ({ graphs, randomMap }) => {
                   data: sortedGraphData.map((record) => record.paidup_capital),
                 },
               ]}
-              type={randomMap}
+              type={mapType as IChartType}
               className="chart-data"
             />
           </div>

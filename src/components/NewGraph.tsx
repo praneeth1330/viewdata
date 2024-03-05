@@ -92,7 +92,7 @@ class NewGraph extends Component {
                     data: sortedGraphs?.map((record) => record?.paidup_capital),
                   },
                 ]}
-                type="line"
+                type="bar"
                 className="chart-data"
               />
             </div>

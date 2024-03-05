@@ -28,3 +28,14 @@ a {
 th {
   cursor: pointer;
 }
+ul {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: start;
+  // margin: 0;
+}
+li {
+  list-style: none;
+  text-decoration: none;
+}

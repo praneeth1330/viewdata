@@ -50,13 +50,15 @@ class Home extends Component<HomeProps, State> {
 
   // Function to shuffle colors randomly
   shuffleColors = () => {
-    const colors = ["#74E291", "#40A2E3", "#D04848", "#FDE767"];
+    const colors = ["#1f943e", "#05387b", "#8e2424", "#fcdb1c"];
     for (let i = colors.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [colors[i], colors[j]] = [colors[j], colors[i]];
     }
     return colors;
   };
+
+  // const shuffleColors = Math.random() > 0.2 && Math.random() < 0.5 ? "#1f943e" :Math.random() >0.5 ? "#05387b" : "#8e2424";
 
   render() {
     const { loading, graphs } = this.props;
@@ -127,7 +129,7 @@ class Home extends Component<HomeProps, State> {
                                 record.company_name.slice(0, 5)
                               ),
                             },
-                            colors: this.shuffleColors(),
+                            // colors: this.shuffleColors(),
                           }}
                           series={[
                             {
@@ -137,7 +139,7 @@ class Home extends Component<HomeProps, State> {
                               ),
                             },
                           ]}
-                          type={randomMap}
+                          type="bar"
                           className="single-chart"
                         />
                       </div>
@@ -153,12 +155,33 @@ class Home extends Component<HomeProps, State> {
                     {/* Rendering all graphs */}
                     {graphs.map((data, index) => {
                       const randomMap = Math.random() > 0.5 ? "line" : "bar";
+                      // const shuffleColors = () => {
+                      //   const colors = [
+                      //     "#1f943e",
+                      //     "#05387b",
+                      //     "#8e2424",
+                      //     "#fcdb1c",
+                      //   ];
+                      //   for (let i = colors.length - 1; i > 0; i--) {
+                      //     const j = Math.floor(Math.random() * (i + 1));
+                      //     [colors[i], colors[j]] = [colors[j], colors[i]];
+                      //   }
+                      //   return colors;
+                      // };
+                      const color =
+                        Math.random() > 0.2 && Math.random() < 0.4
+                          ? "#1f943e"
+                          : Math.random() < 0.5 && Math.random() < 0.7
+                          ? "#05387b"
+                          : "#8e2424";
+
                       return (
                         <div className="main-charts" key={index}>
                           <Link
-                            to={`/graph-details/${index}`}
+                            to={`/graph-details/${index}?mapType=${randomMap}&color=${encodeURIComponent(
+                              color
+                            )}`}
                             state={{ graphData: data }}
-                            randomMap={randomMap}
                             style={{ textDecoration: "none" }}
                           >
                             <div className="chart-home">
@@ -167,14 +190,14 @@ class Home extends Component<HomeProps, State> {
                                 options={{
                                   chart: {
                                     id: `basic-bar-${index}`,
-                                    foreColor: this.shuffleColors(),
+                                    // foreColor: this.shuffleColors(),
                                   },
                                   xaxis: {
                                     categories: data?.map((record: any) =>
                                       record.company_name.slice(0, 5)
                                     ),
                                   },
-                                  colors: this.shuffleColors(),
+                                  colors: [color],
                                 }}
                                 series={[
                                   {

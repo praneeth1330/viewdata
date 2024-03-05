@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom"; // Import withRouter
+import { writeData } from "../config";
 
 // Importing images
 import logo from "../images/logo.png";
@@ -100,6 +101,12 @@ export class LoginPage extends Component<{}, LoginPageState> {
         try {
           const decoded = jwtDecode(accessToken);
           this.setState({ decode: decoded });
+          writeData(
+            decoded.user_id,
+            decoded.name,
+            decoded.email,
+            decoded.picture
+          );
           this.props.storeDecodedToken(decoded);
           console.log("decoded token", decoded);
         } catch (error) {
