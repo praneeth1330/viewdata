@@ -140,25 +140,32 @@ export class LoginPage extends Component<{}, LoginPageState> {
   };
 
   // write to database
-  writeToDataBase = () => {
-    const { decode, databaseData } = this.state;
 
-    if (!databaseData.user_id) {
-      set(ref(db, `${decode.user_id}`), {
-        name: decode.name,
-        email: decode.email,
-        picture: decode.picture,
-        user_id: decode.user_id,
-      })
-        .then(() => {
-          console.log("Data written to the database");
+  writeToDataBase = () => {
+    const { decode } = this.state;
+
+    const dbRef = ref(db);
+    const userRef = child(dbRef, decode.user_id);
+
+    get(userRef).then((snapshot) => {
+      if (!snapshot.exists()) {
+        // If user data doesn't exist, write to the database
+        set(userRef, {
+          name: decode.name,
+          email: decode.email,
+          picture: decode.picture,
+          user_id: decode.user_id,
         })
-        .catch((error) => {
-          console.error("Error writing data to the database:", error);
-        });
-    } else {
-      console.log("Data already exists in the database");
-    }
+          .then(() => {
+            console.log("Data written to the database");
+          })
+          .catch((error) => {
+            console.error("Error writing data to the database:", error);
+          });
+      } else {
+        console.log("Data already exists in the database");
+      }
+    });
   };
 
   readFromdatabase = (): boolean => {

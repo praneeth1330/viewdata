@@ -30,18 +30,12 @@ export class ProfileMenu extends Component {
             <LuUserCircle2 className="profile-icons" />
             <p>My Profile</p>
           </Link>
-          <div className="icons">
-            <LiaUserEditSolid className="profile-icons" />
-            <p>Edit Profile</p>
-          </div>
+
           <div className="icons">
             <LuMessageSquare className="profile-icons" />
             <p>Messages</p>
           </div>
-          <div className="icons">
-            <TbSettings className="profile-icons" />
-            <p>Settings</p>
-          </div>
+
           <div className="icons">
             <LuHelpCircle className="profile-icons" />
             <p>Help</p>

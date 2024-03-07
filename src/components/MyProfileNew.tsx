@@ -99,33 +99,12 @@ export class MyProfile extends Component {
     }
   };
 
-  // updateNameInDatabase = (newName) => {
-  //   const { decodedToken } = this.props;
-
-  //   if (decodedToken) {
-  //     const dbRef = ref(db);
-  //     const userRef = child(dbRef, decodedToken.user_id); // Assuming the user's data is stored under 'users' node with the user's UID as key
-
-  //     // Update the name in the database
-  //     set(userRef, { ...this.state.databaseData, name: newName })
-  //       .then(() => {
-  //         console.log("Name updated successfully in the database");
-  //       })
-  //       .catch((error) => {
-  //         console.error("Error updating name in the database:", error);
-  //       });
-  //   } else {
-  //     console.log("No decoded token available");
-  //   }
-  // };
-
   updateNameInDatabase = (newName) => {
     const { decodedToken } = this.props;
 
     if (decodedToken) {
       const dbRef = ref(db);
-      const userRef = child(dbRef, decodedToken.user_id); // Assuming the user's data is stored under 'users' node with the user's UID as key
-
+      const userRef = child(dbRef, decodedToken.user_id);
       // Update the name in the database while merging existing data
       const updatedData = {
         name: newName,

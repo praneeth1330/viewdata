@@ -82,13 +82,20 @@
         @media (max-width: 768px) {
           .signup-container .signup-left-container .cards-login .login-sso .signin {
             width: 95%; } }
-        .signup-container .signup-left-container .cards-login .login-sso .signin h3:visited {
-          margin: 0;
-          color: black; }
-        .signup-container .signup-left-container .cards-login .login-sso .signin:hover h3 {
-          background: #e7e6e6; }
+        .signup-container .signup-left-container .cards-login .login-sso .signin button {
+          width: 100%;
+          border: 0;
+          padding: 20px 0;
+          font-weight: bolder;
+          font-size: larger;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px; }
         .signup-container .signup-left-container .cards-login .login-sso .signin h3 {
           width: 170px; }
+        .signup-container .signup-left-container .cards-login .login-sso .signin:hover button {
+          background: #e7e6e6; }
         .signup-container .signup-left-container .cards-login .login-sso .signin:hover .sso-icon {
           background: #e7e6e6; }
     .signup-container .signup-left-container .signin-email {
@@ -165,9 +172,8 @@
               .signup-container .signup-left-container .signin-email form .signin-btn button {
                 padding: 10px; } }
             .signup-container .signup-left-container .signin-email form .signin-btn button:hover {
-              background-color: #398bf7;
-              color: white;
-              border: 2px solid white; }
+              background-color: #05387b;
+              color: white; }
       .signup-container .signup-left-container .signin-email .remember-forgot {
         display: flex;
         justify-content: space-between;
@@ -180,7 +186,7 @@
           .signup-container .signup-left-container .signin-email .remember-forgot .remember-me label {
             cursor: pointer; }
         .signup-container .signup-left-container .signin-email .remember-forgot p {
-          color: #398bf7; }
+          color: #05387b; }
 
 .signup-right-container {
   display: flex;
@@ -214,19 +220,23 @@
   !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/components/nav-bar.scss ***!
   \**********************************************************************************************************************/
 .main-nav {
-  overflow: hidden; }
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 100 !important;
+  margin-bottom: 10%; }
 
 nav {
-  background-color: #398bf7;
+  background-color: #05387b;
   padding: 10px 20px;
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  overflow: hidden;
-  z-index: 100; }
+  align-items: center; }
   nav .logo-img {
     width: 150px;
-    background-color: #398bf7; }
+    background-color: #05387b;
+    text-decoration: none !important;
+    margin: 0%; }
     @media (max-width: 768px) {
       nav .logo-img {
         width: 100px; } }
@@ -257,7 +267,7 @@ nav {
     gap: 20px;
     font-size: xx-large;
     color: #fff;
-    background-color: #398bf7; }
+    background-color: #05387b; }
     nav .profile .hamburger {
       display: none;
       width: 30px;
@@ -300,7 +310,6 @@ nav {
         gap: 10px;
         width: auto;
         height: 50px;
-        border-bottom: 1px solid #828aa3;
         background-color: #fff;
         color: black;
         display: flex;
@@ -309,9 +318,10 @@ nav {
         gap: 10px;
         width: auto;
         height: 50px;
-        border-bottom: 1px solid #828aa3;
         background-color: #fff;
-        background-color: #fff; }
+        background-color: #fff;
+        list-style: none;
+        text-decoration: none; }
         nav .profile .hamburger .icons .profile-icons {
           width: 30px;
           height: 30px;
@@ -319,14 +329,18 @@ nav {
           background-color: #fff;
           color: #828aa3; }
           nav .profile .hamburger .icons .profile-icons:hover {
-            color: #398bf7; }
+            color: #05387b; }
         nav .profile .hamburger .icons p {
           font-size: medium;
           background-color: #fff; }
         nav .profile .hamburger .icons:hover p {
-          color: #398bf7; }
+          color: #05387b; }
         nav .profile .hamburger .icons:hover svg {
-          color: #398bf7; }
+          color: #05387b; }
+        nav .profile .hamburger .icons p:visited {
+          text-decoration: none; }
+        nav .profile .hamburger .icons p {
+          text-decoration: none; }
       nav .profile .hamburger .profile-info {
         color: black;
         display: flex;
@@ -335,15 +349,14 @@ nav {
         gap: 10px;
         width: auto;
         height: 50px;
-        border-bottom: 1px solid #828aa3;
         background-color: #fff;
         background-color: #fff; }
         nav .profile .hamburger .profile-info .profile-img {
-          width: 40px;
-          height: 40px;
+          width: 30px;
+          height: 30px;
           border-radius: 100%;
           object-fit: cover;
-          border: 2px solid #398bf7;
+          border: 2px solid #05387b;
           background-color: #fff; }
         nav .profile .hamburger .profile-info .profile-data {
           background-color: #fff; }
@@ -357,7 +370,7 @@ nav {
             color: #828aa3;
             background-color: #fff; }
     nav .profile .larg-menu {
-      background-color: #398bf7;
+      background-color: #05387b;
       width: 30px;
       height: 30px;
       cursor: pointer; }
@@ -368,12 +381,12 @@ nav {
       nav .profile .profilechange {
         display: none; } }
     nav .profile .notification {
-      background-color: #398bf7;
+      background-color: #05387b;
       width: 30px;
       height: 30px;
       cursor: pointer; }
     nav .profile .notification-bar {
-      background-color: #398bf7;
+      background-color: #05387b;
       width: 30px;
       height: 30px; }
 
@@ -398,24 +411,25 @@ nav {
       justify-content: start;
       align-items: center;
       gap: 20px;
-      height: 45px;
-      border-bottom: 2px solid #f6f5f5;
+      padding: 0.5rem;
+      padding-inline-start: 0;
       background-color: #fff; }
       .display-menu .main-lg .lg-pro .img {
         width: 25px;
         height: 25px;
         background-color: #fff; }
         .display-menu .main-lg .lg-pro .img img {
-          width: 100%;
-          height: 100%;
+          width: 25px;
+          height: 25px;
           object-fit: cover;
           border-radius: 100%;
-          border: 2px solid #398bf7; }
+          border: 1px solid #05387b; }
       .display-menu .main-lg .lg-pro .pro-txt {
         margin: 0;
         padding: 0;
-        gap: 0;
-        background-color: #fff; }
+        background-color: #fff;
+        width: 100%;
+        word-break: break-all; }
         .display-menu .main-lg .lg-pro .pro-txt h5 {
           margin: 0;
           background-color: #fff; }
@@ -429,7 +443,6 @@ nav {
       align-items: center;
       justify-content: start;
       gap: 20px;
-      border-bottom: 2px solid #f6f5f5;
       color: #828aa3;
       background-color: #fff;
       cursor: pointer; }
@@ -440,13 +453,13 @@ nav {
         margin: 0;
         padding: 8px 0; }
       .display-menu .main-lg .icons-lg:hover p {
-        color: #398bf7; }
+        color: #05387b; }
       .display-menu .main-lg .icons-lg .profile-icons-lg {
         width: 25px;
         height: 25px;
         background-color: #fff; }
       .display-menu .main-lg .icons-lg:hover .profile-icons-lg {
-        color: #398bf7; }
+        color: #05387b; }
       .display-menu .main-lg .icons-lg .large-icon {
         border-bottom: 0px; }
 
@@ -455,7 +468,27 @@ nav {
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  background-color: #398bf7; }
+  background-color: #05387b; }
+
+.logo-nav-img {
+  text-decoration: none !important;
+  border: 0px !important;
+  outline: none;
+  border-width: 0px;
+  outline-width: 0px;
+  border-bottom: none;
+  background-color: #05387b;
+  margin: 0%; }
+
+.search-recommendations {
+  position: fixed;
+  top: 50px;
+  left: 35%;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px; }
 
 /*!*******************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/components/home.scss ***!
@@ -486,22 +519,33 @@ nav {
 .allmainGraphs {
   padding-bottom: 2%; }
   .allmainGraphs .select {
+    position: fixed;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin: 2% 5%; }
+    margin: 0 5%;
+    top: 50px;
+    z-index: 12;
+    width: 90%;
+    background-color: #fff;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.02); }
+    .allmainGraphs .select h3 {
+      font-size: 20px; }
     @media (max-width: 768px) {
       .allmainGraphs .select {
         display: flex;
         align-items: center;
         justify-content: center;
-        margin: 0 10%; }
+        margin: 0 10%;
+        width: 80%;
+        top: 50px; }
         .allmainGraphs .select h3 {
           font-size: small;
           font-weight: normal; } }
     .allmainGraphs .select .select-dropdown {
       position: relative;
-      width: 200px; }
+      width: 200px;
+      padding: 0% 5px; }
       .allmainGraphs .select .select-dropdown select {
         width: 100%;
         padding: 10px;
@@ -509,9 +553,9 @@ nav {
         border-radius: 5px;
         background-color: #fff;
         appearance: none;
-        /* Remove default arrow */
         outline: none;
         cursor: pointer;
+        z-index: 10 !important;
         transition: border-color 0.3s ease-in-out;
         box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.02);
         object-fit: cover; }
@@ -525,15 +569,24 @@ nav {
         right: 15px;
         transform: translateY(-50%);
         pointer-events: none;
-        color: #398bf7; }
+        color: #05387b;
+        z-index: 10 !important; }
       .allmainGraphs .select .select-dropdown select option {
         background-color: #fff;
-        color: #828aa3; }
+        color: #828aa3;
+        padding: 0; }
+    .allmainGraphs .select h3 {
+      padding: 0 5px; }
   .allmainGraphs .graph-page {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center; }
+    justify-content: center;
+    margin-top: 12%;
+    z-index: -100 !important; }
+    @media (max-width: 768px) {
+      .allmainGraphs .graph-page {
+        margin-top: 35%; } }
     .allmainGraphs .graph-page .chart-display {
       width: 100%; }
       @media (max-width: 768px) {
@@ -608,7 +661,7 @@ nav {
             text-align: center; }
 
 .apexcharts-datalabel {
-  fill: #5d5b5b;
+  fill: black;
   font-size: 8px;
   font-weight: lighter;
   font-style: normal; }
@@ -617,7 +670,8 @@ nav {
   !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/components/graph.scss ***!
   \********************************************************************************************************************/
 .single-graph {
-  padding-bottom: 2%; }
+  padding-bottom: 2%;
+  margin-top: 60px; }
   .single-graph .graph-details-page .back {
     display: flex;
     align-items: center;
@@ -650,8 +704,10 @@ nav {
         font-size: x-small;
         column-gap: 20px; } }
     .single-graph .graph-details-page .single-graph-container .chart {
-      margin: 20px;
       margin-bottom: 0; }
+      @media (max-width: 768px) {
+        .single-graph .graph-details-page .single-graph-container .chart {
+          margin: 0 20px; } }
       .single-graph .graph-details-page .single-graph-container .chart p {
         font-weight: bold;
         margin-bottom: 10px; }
@@ -696,6 +752,89 @@ nav {
         .single-graph .graph-details-page .single-graph-container .company-details .company-data .paragraph {
           display: none; } }
 
+/*!***************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/components/myprofilenew.scss ***!
+  \***************************************************************************************************************************/
+.main-myProfile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 10% 5%; }
+  .main-myProfile .myprofile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 5%; }
+    .main-myProfile .myprofile .profile-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0; }
+      .main-myProfile .myprofile .profile-header h1 {
+        font-size: 130px;
+        margin: 0; }
+        @media (max-width: 768px) {
+          .main-myProfile .myprofile .profile-header h1 {
+            font-size: 80px;
+            margin-top: 10px; } }
+      .main-myProfile .myprofile .profile-header p {
+        margin: 0;
+        font-size: large; }
+    .main-myProfile .myprofile .profile-grid {
+      margin: 50px 0;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px; }
+      @media (max-width: 768px) {
+        .main-myProfile .myprofile .profile-grid {
+          display: grid;
+          grid-template-columns: auto;
+          margin: 20px 0; } }
+      .main-myProfile .myprofile .profile-grid .profile-picture {
+        display: flex;
+        width: 300px;
+        height: 300px; }
+        .main-myProfile .myprofile .profile-grid .profile-picture img {
+          width: 100%;
+          height: auto;
+          object-fit: cover;
+          border-radius: 100%; }
+      .main-myProfile .myprofile .profile-grid .profile-details {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: unset;
+        gap: 10px;
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.02);
+        padding: 0 10px; }
+        .main-myProfile .myprofile .profile-grid .profile-details h3 {
+          margin: 0;
+          padding: 10px 0; }
+        .main-myProfile .myprofile .profile-grid .profile-details .details {
+          display: flex;
+          gap: 10px;
+          align-items: center;
+          justify-content: start;
+          width: 100%; }
+    .main-myProfile .myprofile .profile-aboutme {
+      display: flex;
+      flex-direction: column;
+      text-align: start;
+      align-items: start;
+      justify-content: start;
+      width: 100%; }
+      .main-myProfile .myprofile .profile-aboutme h3 {
+        padding: 0 20px; }
+      .main-myProfile .myprofile .profile-aboutme p {
+        padding: 0 20px; }
+
+.edit {
+  font-size: x-large;
+  cursor: pointer; }
+
 /*!*********************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/index.scss ***!
   \*********************************************************************************************************/
@@ -707,4 +846,32 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box; }
+
+.active {
+  color: green; }
+
+.inactive {
+  color: red; }
+
+a {
+  text-decoration: none !important;
+  border: 0px !important;
+  outline: none;
+  border-width: 0px;
+  outline-width: 0px;
+  border-bottom: none; }
+
+th {
+  cursor: pointer; }
+
+ul {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: start; }
+
+li {
+  list-style: none;
+  text-decoration: none;
+  cursor: pointer; }
 

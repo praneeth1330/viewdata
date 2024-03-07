@@ -46,6 +46,9 @@
     background-color: #fff;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.02);
     // box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.2);
+    h3 {
+      font-size: 20px;
+    }
 
     @media (max-width: 768px) {
       display: flex;
@@ -217,7 +220,7 @@
   }
 }
 .apexcharts-datalabel {
-  fill: rgb(93, 91, 91);
+  fill: rgb(0, 0, 0);
   font-size: 8px;
   font-weight: lighter;
   font-style: normal;

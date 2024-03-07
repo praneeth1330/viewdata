@@ -210,18 +210,12 @@ class NavBar extends Component<NavBarProps, NavBarState> {
                 <LuUserCircle2 className="profile-icons-lg" />
                 <p>My Profile</p>
               </Link>
-              <div className="icons-lg">
-                <TbSettings className="profile-icons-lg" />
-                <p>Edit Profile</p>
-              </div>
+
               <div className="icons-lg">
                 <LuMessageSquare className="profile-icons-lg" />
                 <p>Messages</p>
               </div>
-              <div className="icons-lg">
-                <TbSettings className="profile-icons-lg" />
-                <p>Settings</p>
-              </div>
+
               <div className="icons-lg">
                 <LuHelpCircle className="profile-icons-lg" />
                 <p>Help</p>
