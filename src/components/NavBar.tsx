@@ -1,7 +1,6 @@
-import React, { Component } from "react";
+import React, { Component, MouseEvent, ChangeEvent } from "react";
 import { connect } from "react-redux";
 import { searchQuery } from "../redux/action";
-import { fetchGraphs } from "../redux/action";
 import { MdOutlineNotificationsNone } from "react-icons/md";
 import { FaRegUserCircle } from "react-icons/fa";
 import { LuMessageSquare } from "react-icons/lu";
@@ -12,12 +11,25 @@ import ProfileMenu from "./ProfileMenu";
 import { RiLogoutCircleLine } from "react-icons/ri";
 import logo_nav from "../images/nav-logo.png";
 import Profile from "../images/profile.jpg";
-
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import "./nav-bar.scss";
 
-class NavBar extends Component {
-  state = {
+interface NavBarProps {
+  decodedToken: any;
+  graphs: any[];
+  dispatch: any;
+}
+
+interface NavBarState {
+  showMenu: boolean;
+  largMenu: boolean;
+  search: string;
+}
+
+class NavBar extends Component<NavBarProps, NavBarState> {
+  private navRef: any;
+
+  state: NavBarState = {
     showMenu: false,
     largMenu: false,
     search: "",
@@ -31,8 +43,8 @@ class NavBar extends Component {
     document.removeEventListener("mousedown", this.handleClickOutside);
   }
 
-  handleClickOutside = (event) => {
-    if (this.navRef && !this.navRef.contains(event.target)) {
+  handleClickOutside = (event: MouseEvent) => {
+    if (this.navRef && !this.navRef.contains(event.target as Node)) {
       this.setState({ showMenu: false, largMenu: false });
     }
   };
@@ -49,17 +61,13 @@ class NavBar extends Component {
     }));
   };
 
-  handleSearchChange = (event) => {
+  handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
-    // setTimeout;(()=>{})
     this.setState({ search: value });
     this.props.dispatch(searchQuery(value));
-
-    // Dispatch action to update search state
   };
 
-  // modify the code for search
-  handleSearchSubmit = (e) => {
+  handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { search } = this.state;
     this.props.dispatch(searchQuery(search));
@@ -72,32 +80,6 @@ class NavBar extends Component {
     console.log("Search Results:", searchResults);
   };
 
-  // renderSearchRecommendations = () => {
-  //   const { search } = this.state;
-  //   const { graphs } = this.props;
-  //   const regex = new RegExp(search, "i");
-  //   const searchResults = graphs.filter(
-  //     (item) =>
-  //       regex.test(item[0].registered_state) || regex.test(item.description)
-  //   );
-  //   console.log("search filter", searchResults);
-
-  //   if (searchResults.length > 0) {
-  //     return (
-  //       <div className="search-recommendations">
-  //         <ul>
-  //           {searchResults.map((result, index) => (
-  //             <li key={index}>
-  //               {[...new Set(result.map((state) => state.registered_state))]}
-  //             </li>
-  //           ))}
-  //         </ul>
-  //       </div>
-  //     );
-  //   } else {
-  //     return null;
-  //   }
-  // };
   renderSearchRecommendations = () => {
     const { search } = this.state;
     const { graphs } = this.props;
@@ -108,20 +90,21 @@ class NavBar extends Component {
     );
 
     if (search.trim() !== "") {
-      // Check if search query is not empty
       return searchResults.length > 0 ? (
         <div className="search-recommendations">
           <ul>
             {searchResults.map((result, index) => (
-              <li key={index}>
-                {[...new Set(result.map((state) => state.registered_state))]}
-              </li>
+              <Link to="/graph ">
+                <li key={index}>
+                  {[...new Set(result.map((state) => state.registered_state))]}
+                </li>
+              </Link>
             ))}
           </ul>
         </div>
       ) : null;
     } else {
-      return null; // Return null when search query is empty
+      return null;
     }
   };
 
@@ -150,7 +133,6 @@ class NavBar extends Component {
               value={search}
               onChange={this.handleSearchChange}
             />
-            {/* <button onClick={this.handleSearchSubmit}>Search</button> */}
           </form>
           {this.renderSearchRecommendations()}
           <div className="profile">
@@ -260,7 +242,7 @@ class NavBar extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: any) => ({
   decodedToken: state.auth.decodedToken,
   graphs: state.graphs.graphs,
 });

@@ -17,17 +17,18 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-const writeData = (userId, name, email, picture) => {
-  const db = getDatabase();
-  const reference = ref(db, userId);
-  set(reference, {
-    name: name,
-    email: email,
-    picture: picture,
-  });
-};
+const db = getDatabase();
+// const writeData = (userId, name, email, picture) => {
+//   const db = getDatabase();
+//   const reference = ref(db, userId);
+//   set(reference, {
+//     name: name,
+//     email: email,
+//     picture: picture,
+//   });
+// };
 
 // export
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
-export { auth, provider, writeData };
+export { auth, provider, db };

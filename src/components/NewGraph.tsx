@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, MouseEvent } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import Chart from "react-apexcharts";
@@ -7,9 +7,19 @@ import "./graph.scss";
 import { filteredGraphs } from "../redux/action";
 import NavBar from "./NavBar";
 
+// Define props and state interfaces
+interface GraphProps {
+  filteredGraphs: any[]; // Define your graph data structure here
+}
+
+interface GraphState {
+  sortColumn: string | null;
+  sortDirection: string;
+}
+
 // Class component for displaying new graph details
-class NewGraph extends Component {
-  constructor(props) {
+class NewGraph extends Component<GraphProps, GraphState> {
+  constructor(props: GraphProps) {
     super(props);
     // Initialize state
     this.state = {
@@ -19,7 +29,7 @@ class NewGraph extends Component {
   }
 
   // Function to handle sorting
-  handleSort = (column: any) => {
+  handleSort = (column: string) => {
     this.setState((prevState) => ({
       sortColumn: column,
       sortDirection:
@@ -38,7 +48,7 @@ class NewGraph extends Component {
     console.log("newdata of filter ", filteredGraphs);
 
     // Return if no data available
-    if (filteredGraphs?.length === 0) {
+    if (!filteredGraphs || filteredGraphs.length === 0) {
       return <div>No data available</div>;
     }
 
@@ -192,7 +202,7 @@ class NewGraph extends Component {
 }
 
 // Map state to component props
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: any) => ({
   filteredGraphs: state.singleGraph.filteredGraphs.flat(),
 });
 

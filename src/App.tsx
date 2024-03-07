@@ -10,6 +10,7 @@ import NewGraph from "./components/NewGraph";
 import MyProfile from "./components/MyProfile";
 import NewProfile from "./components/NewProfile";
 import MyProfileNew from "./components/MyProfileNew";
+import MyNewprofile from "./components/MyNewprofile";
 export default class App extends Component {
   render() {
     return (
@@ -18,7 +19,7 @@ export default class App extends Component {
           <Routes>
             <Route path="/" element={<LoginPage />} />
             <Route path="/home" element={<Home />} />
-            <Route path="/profile" element={<MyProfileNew />} />
+            <Route path="/profile" element={<MyNewprofile />} />
             <Route path="/graph" element={<NewGraph />} />
             <Route
               path="/graph-details/:id"

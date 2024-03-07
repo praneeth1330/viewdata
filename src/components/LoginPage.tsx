@@ -22,6 +22,9 @@ import { signInWithPopup } from "firebase/auth";
 import { storeDecodedToken } from "../redux/action";
 import { connect } from "react-redux";
 
+import { db } from "../config";
+import { child, ref, set, get } from "firebase/database";
+
 // Defining state interface for LoginPage component
 interface LoginPageState {
   signIn: boolean;
@@ -32,6 +35,7 @@ interface LoginPageState {
   value: any;
   accessToken: any;
   decode: any;
+  databaseData: any;
 }
 
 // LoginPage component
@@ -46,7 +50,8 @@ export class LoginPage extends Component<{}, LoginPageState> {
       passwordError: "",
       value: "",
       accessToken: "",
-      decode: [],
+      decode: {},
+      databaseData: {},
     };
   }
 
@@ -89,6 +94,9 @@ export class LoginPage extends Component<{}, LoginPageState> {
     return isValid;
   };
 
+  // componentDidMount(): void {
+  //   this.readFromdatabase();
+  // }
   // Function to handle Google sign-in
   handleGoogleSignIn = () => {
     signInWithPopup(auth, provider)
@@ -101,14 +109,17 @@ export class LoginPage extends Component<{}, LoginPageState> {
         try {
           const decoded = jwtDecode(accessToken);
           this.setState({ decode: decoded });
-          writeData(
-            decoded.user_id,
-            decoded.name,
-            decoded.email,
-            decoded.picture
-          );
+          const isUserExists = this.readFromdatabase();
+          // this.readFromdatabase();
+
+          if (!isUserExists) {
+            this.writeToDataBase();
+          } else {
+            console.log("user already exists in the database");
+          }
           this.props.storeDecodedToken(decoded);
           console.log("decoded token", decoded);
+          console.log("decode token", this.state.decode.user_id);
         } catch (error) {
           console.error("Error decoding token:", error);
         }
@@ -128,9 +139,51 @@ export class LoginPage extends Component<{}, LoginPageState> {
     }
   };
 
+  // write to database
+  writeToDataBase = () => {
+    const { decode, databaseData } = this.state;
+
+    if (!databaseData.user_id) {
+      set(ref(db, `${decode.user_id}`), {
+        name: decode.name,
+        email: decode.email,
+        picture: decode.picture,
+        user_id: decode.user_id,
+      })
+        .then(() => {
+          console.log("Data written to the database");
+        })
+        .catch((error) => {
+          console.error("Error writing data to the database:", error);
+        });
+    } else {
+      console.log("Data already exists in the database");
+    }
+  };
+
+  readFromdatabase = (): boolean => {
+    const dbRef = ref(db);
+    const userRef = child(dbRef, this.state.decode.user_id);
+
+    get(userRef).then((snapshot) => {
+      if (snapshot.exists()) {
+        const userData = snapshot.val();
+        console.log("data", snapshot.val());
+        this.setState({ databaseData: userData });
+        console.log(
+          "databaseData login page ",
+          this.state.databaseData.user_id
+        );
+        return true;
+      } else {
+        console.log("No data found");
+        return false;
+      }
+    });
+  };
+
   render() {
-    const { signIn, email, password, emailError, passwordError, decode } =
-      this.state;
+    const { signIn, email, password, emailError, passwordError } = this.state;
 
     return (
       <div className="signup-container">

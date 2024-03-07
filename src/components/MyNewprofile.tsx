@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import Picture from "../images/profile.jpg";
-// import "./myprofile.scss";
 import "./myprofilenew.scss";
 import { connect } from "react-redux";
 import NavBar from "./NavBar";
@@ -15,78 +14,51 @@ export class MyProfile extends Component {
     super(props);
     this.state = {
       editedName: "",
-
       isEditingName: false,
-      databaseData: {},
+      databaseData: null, // Initialize to null
     };
   }
 
-  //write to database
-  // writeToDataBase = () => {};
+  componentDidMount() {
+    this.readDataFromDatabase(); // Fetch user data when component mounts
+  }
 
-  // Handle edit button click for name
   handleEditName = () => {
-    const { decodedToken } = this.props;
-
-    const { editedName } = this.state;
-    if (decodedToken) {
+    const { databaseData } = this.state;
+    if (databaseData) {
       this.setState({
-        editedName: editedName || decodedToken.name, // Use editedName if available, otherwise use decoded name
+        editedName: databaseData.name, // Use name from database
         isEditingName: true,
       });
     }
   };
 
-  // Handle input change for name
   handleChangeName = (e) => {
     this.setState({
       editedName: e.target.value,
     });
   };
 
-  // Handle save button click for name
   handleSaveName = () => {
     const { editedName } = this.state;
-
     this.updateNameInDatabase(editedName);
-    this.readDataFromDatabase();
-    // Update state with edited name
-    this.setState(
-      {
-        isEditingName: false,
-      },
-      () => {
-        // Save edited name to local storage after state is updated
-        localStorage.setItem("editedName", editedName);
-      }
-    );
+    // No need to read data again, as the updateNameInDatabase will update the state with new data
+    this.setState({
+      isEditingName: false,
+    });
   };
-  // console.log(this.this.props.first)
-
-  //  readData from firebase
-  // readDataFromDatabase = () => {
-  //   const dbRef = ref(db);
-  //   get(child(dbRef, this.state.decodedToken)).then((snapshot) => {
-  //     if (snapshot.exists()) {
-  //       console.log(snapshot.val());
-  //     } else {
-  //       console.log("No data available");
-  //     }
-  //   });
-  // };
 
   readDataFromDatabase = () => {
     const { decodedToken } = this.props;
 
     if (decodedToken) {
       const dbRef = ref(db);
-      const userRef = child(dbRef, decodedToken.user_id); // Assuming the user's data is stored under 'users' node with the user's UID as key
+      const userRef = child(dbRef, decodedToken.user_id);
       get(userRef)
         .then((snapshot) => {
           if (snapshot.exists()) {
-            console.log(snapshot.val());
-            this.setState({ databaseData: snapshot.val() });
-            console.log("database read", this.state.databaseData);
+            const userData = snapshot.val();
+            this.setState({ databaseData: userData });
           } else {
             console.log("No data available for this user");
           }
@@ -99,43 +71,20 @@ export class MyProfile extends Component {
     }
   };
 
-  // updateNameInDatabase = (newName) => {
-  //   const { decodedToken } = this.props;
-
-  //   if (decodedToken) {
-  //     const dbRef = ref(db);
-  //     const userRef = child(dbRef, decodedToken.user_id); // Assuming the user's data is stored under 'users' node with the user's UID as key
-
-  //     // Update the name in the database
-  //     set(userRef, { ...this.state.databaseData, name: newName })
-  //       .then(() => {
-  //         console.log("Name updated successfully in the database");
-  //       })
-  //       .catch((error) => {
-  //         console.error("Error updating name in the database:", error);
-  //       });
-  //   } else {
-  //     console.log("No decoded token available");
-  //   }
-  // };
-
   updateNameInDatabase = (newName) => {
     const { decodedToken } = this.props;
 
     if (decodedToken) {
       const dbRef = ref(db);
-      const userRef = child(dbRef, decodedToken.user_id); // Assuming the user's data is stored under 'users' node with the user's UID as key
+      const userRef = child(dbRef, decodedToken.user_id);
 
-      // Update the name in the database while merging existing data
-      const updatedData = {
-        name: newName,
-        email: decodedToken.email,
-        user_id: decodedToken.user_id,
-        picture: decodedToken.picture,
-      };
-      set(userRef, updatedData)
+      set(userRef, { ...this.state.databaseData, name: newName })
         .then(() => {
           console.log("Name updated successfully in the database");
+          // Update state with the new name
+          this.setState((prevState) => ({
+            databaseData: { ...prevState.databaseData, name: newName },
+          }));
         })
         .catch((error) => {
           console.error("Error updating name in the database:", error);
@@ -146,8 +95,7 @@ export class MyProfile extends Component {
   };
 
   render() {
-    const { decodedToken } = this.props;
-    const { editedName, isEditingName, databaseData } = this.state;
+    const { databaseData, isEditingName, editedName } = this.state;
 
     return (
       <div className="">
@@ -156,23 +104,19 @@ export class MyProfile extends Component {
           <div className="myprofile">
             <div className="profile-header">
               <h1>Hello!</h1>
+              <p>{databaseData ? databaseData.name : "example name"}</p>
               <p>
-                {databaseData.user_id === decodedToken.user_id
-                  ? databaseData.name
-                  : decodedToken.name}
-              </p>
-              <p>
-                {decodedToken !== null
+                {databaseData
                   ? "i am " +
-                    decodedToken.name +
+                    databaseData.name +
                     ", creative Frontend Developer"
-                  : "I'm a creative Frontend Developer"}
+                  : "Loading..."}
               </p>
             </div>
             <div className="profile-grid">
               <div className="profile-picture">
                 <img
-                  src={decodedToken !== null ? decodedToken.picture : Picture}
+                  src={databaseData ? databaseData.picture : Picture}
                   alt=""
                   className="profile-image"
                 />
@@ -190,11 +134,7 @@ export class MyProfile extends Component {
                     />
                   ) : (
                     <p>
-                      {editedName
-                        ? databaseData.name
-                        : decodedToken !== null
-                        ? databaseData.name
-                        : "Example Name"}
+                      {databaseData ? databaseData.name : "exapmle name..."}
                     </p>
                   )}
                   {isEditingName ? (
@@ -203,18 +143,13 @@ export class MyProfile extends Component {
                       className="edit"
                     />
                   ) : (
-                    // <button onClick={this.handleSaveName}>Save</button>
                     <CiEdit onClick={this.handleEditName} className="edit" />
-                    // <button onClick={this.handleEditName}>Edit</button>
                   )}
                 </div>
                 <div className="details">
                   <p className="details-headers">Email:</p>
-
                   <p>
-                    {decodedToken !== null
-                      ? decodedToken.email
-                      : "Example Email"}
+                    {databaseData ? databaseData.email : "example email..."}
                   </p>
                 </div>
               </div>
