@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom"; // Import withRouter
-// import { writeData } from "../config";
+import { Link } from "react-router-dom";
+import { writeData } from "../config";
 
 // Importing images
 import logo from "../images/logo.png";
@@ -39,7 +39,7 @@ interface LoginPageState {
 }
 
 // LoginPage component
-export class LoginPage extends Component<{}, LoginPageState> {
+class LoginPage extends Component<{}, LoginPageState> {
   constructor(props: {}) {
     super(props);
     this.state = {
@@ -121,6 +121,9 @@ export class LoginPage extends Component<{}, LoginPageState> {
           this.props.storeDecodedToken(decoded);
           console.log("decoded token", decoded);
           console.log("decode token", this.state.decode.user_id);
+
+          // Redirect to the home page after successful Google SSO
+          window.location.href = "/home";
         } catch (error) {
           console.error("Error decoding token:", error);
         }

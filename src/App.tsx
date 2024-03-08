@@ -11,13 +11,15 @@ import MyProfile from "./components/MyProfile";
 import NewProfile from "./components/NewProfile";
 import MyProfileNew from "./components/MyProfileNew";
 import MyNewprofile from "./components/MyNewprofile";
+import NewLogin from "./components/NewLogin";
+import LoginRedesign from "./components/LoginRedesign";
 export default class App extends Component {
   render() {
     return (
       <Provider store={store}>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<LoginPage />} />
+            <Route path="/" element={<LoginRedesign />} />
             <Route path="/home" element={<Home />} />
             <Route path="/profile" element={<MyNewprofile />} />
             <Route path="/graph" element={<NewGraph />} />

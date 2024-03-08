@@ -1,18 +1,15 @@
+// write html for sso with google , apple and also with email and password
 import React, { Component } from "react";
-import { Link } from "react-router-dom"; // Import withRouter
-// import { writeData } from "../config";
-
-// Importing images
-import logo from "../images/logo.png";
-import graph from "../images/graph.png";
+import "./loginRedesign.scss";
+import Google from "../images/google.png";
+import { FaApple } from "react-icons/fa";
+// import React, { Component } from "react";
+import { Link } from "react-router-dom"; // Import
 
 // Importing dependencies
 import { jwtDecode } from "jwt-decode";
-import { IoCloseOutline } from "react-icons/io5";
-import { FaGoogle } from "react-icons/fa";
-import { BsApple } from "react-icons/bs";
-import { MdEmail } from "react-icons/md";
-import "./login.scss";
+
+// import "./login.scss";
 
 // Importing Firebase authentication and configuration
 import { auth, provider } from "../config";
@@ -38,8 +35,7 @@ interface LoginPageState {
   databaseData: any;
 }
 
-// LoginPage component
-export class LoginPage extends Component<{}, LoginPageState> {
+export class LoginRedesign extends Component {
   constructor(props: {}) {
     super(props);
     this.state = {
@@ -54,8 +50,6 @@ export class LoginPage extends Component<{}, LoginPageState> {
       databaseData: {},
     };
   }
-
-  // Function to switch between sign-in methods
   cardChange = () => {
     this.setState((prevState) => ({
       signIn: !prevState.signIn,
@@ -121,6 +115,9 @@ export class LoginPage extends Component<{}, LoginPageState> {
           this.props.storeDecodedToken(decoded);
           console.log("decoded token", decoded);
           console.log("decode token", this.state.decode.user_id);
+
+          // Redirect to the home page after successful Google SSO
+          // window.location.href = "/home";
         } catch (error) {
           console.error("Error decoding token:", error);
         }
@@ -189,137 +186,81 @@ export class LoginPage extends Component<{}, LoginPageState> {
       }
     });
   };
-
   render() {
     const { signIn, email, password, emailError, passwordError } = this.state;
 
     return (
-      <div className="signup-container">
-        {/* Left side of the page */}
-        <div className="signup-left-container">
-          <div className="uper-text">
-            <div className="header-txt">
-              <h1>Welcome to </h1>
-              <img src={logo} alt="" />
-            </div>
-
-            <p className="lorem">
-              Explore the Depths of Data: Your Ultimate Destination for Dynamic
-              Charts and Graphs. Dive into a World of Visual Insights with Our
-              Comprehensive Collection of Charts. Unveil Trends, Patterns, and
-              Analysis with Ease. Empower Your Decision-Making Process with
-              Clear, Concise Visualizations. Discover the Power of Data
-              Visualization Today
-            </p>
-            <h3>Please sign in to continue </h3>
-            <p>By Signing you will access best features</p>
-          </div>
-
-          <div className="card">
-            {/* Conditionally rendering sign-in methods */}
-            {signIn ? (
-              <div className="cards-login">
-                <div className="login-sso">
-                  <div className="signin ">
-                    <button onClick={this.handleGoogleSignIn}>
-                      <FaGoogle className="sso-icon" />
-                      Sign in with Google
+      <div className="main_container">
+        <div className="grid_container">
+          <div className="grid-item-left">
+            <div className="login-item">
+              <div className="login-header">
+                <h3>Welcome to ViewData</h3>
+                <p>
+                  Today is a new day. It's your day. You shape it. Sign-in to
+                  start managing your projects.
+                </p>
+              </div>
+              <div className="login-sso">
+                <div className="google-sso">
+                  <button onClick={this.handleGoogleSignIn}>
+                    {" "}
+                    <img src={Google} alt="" width={15} />
+                    Sign in with Google
+                  </button>
+                </div>
+                <div className="apple-sso">
+                  <Link to="/home">
+                    <button>
+                      <FaApple className="apple" /> Sign in with Apple
                     </button>
-                  </div>
-
-                  <div className="signin">
-                    <Link to="/home">
-                      <button>
-                        <BsApple className="sso-icon" />
-                        Sign in with Apple
-                      </button>
-                    </Link>
-                  </div>
-
-                  <div className="signin">
-                    <button onClick={this.cardChange}>
-                      <MdEmail className="sso-icon" />
-                      Sign in with Email{" "}
-                    </button>
-                  </div>
+                  </Link>
                 </div>
               </div>
-            ) : (
-              <div className="signin-email">
-                {/* Form for email sign-in */}
-                <div className="cross-button">
-                  <IoCloseOutline
-                    className="backarrow-login"
-                    onClick={this.cardChange}
+
+              <div className="or">
+                <hr /> or <hr />
+              </div>
+
+              <form className="Email-login" onSubmit={this.handleSubmit}>
+                <div className="email">
+                  <label htmlFor="email">Email</label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={email}
+                    onChange={this.handleInputChange}
                   />
+                  <div className="error" style={{ color: "red" }}>
+                    {emailError}
+                  </div>
                 </div>
-                <form onSubmit={this.handleSubmit}>
-                  <div className="email">
-                    <label htmlFor="email">Email</label>
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      value={email}
-                      onChange={this.handleInputChange}
-                    />
-                    <div className="error" style={{ color: "red" }}>
-                      {emailError}
-                    </div>
+                <div className="password">
+                  <label htmlFor="password">Password</label>
+                  <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    value={password}
+                    onChange={this.handleInputChange}
+                  />
+                  <div className="error" style={{ color: "red" }}>
+                    {passwordError}
                   </div>
-                  <div className="password">
-                    <label htmlFor="password">Password</label>
-                    <input
-                      type="password"
-                      id="password"
-                      name="password"
-                      value={password}
-                      onChange={this.handleInputChange}
-                    />
-                    <div className="error" style={{ color: "red" }}>
-                      {passwordError}
-                    </div>
-                  </div>
-
-                  <div className="signin-btn">
-                    <button type="submit">Sign In</button>
-                  </div>
-                </form>
-                <div className="remember-forgot">
-                  <div className="remember-me">
-                    <input
-                      type="checkbox"
-                      name="remember-me"
-                      id="remember-me"
-                    />
-                    <label htmlFor="remember-me">Remember Me</label>
-                  </div>
-                  <p>Forgot password</p>
                 </div>
-              </div>
-            )}
+                <p className="forget">Forgot Password</p>
+                <button type="submit">Login</button>
+              </form>
+            </div>
           </div>
-        </div>
-
-        {/* Right side of the page */}
-        <div className="signup-right-container">
-          <div className="left-text">
-            <h2>Simplest way to view your data</h2>
-            <p>
-              Simplify data analysis with our intuitive visualization tools.
-              Experience effortless insights at your fingertips."
-            </p>
-          </div>
-          <div className="left-image">
-            <img src={graph} alt="" />
-          </div>
+          <div className="grid-item-right"></div>
         </div>
       </div>
     );
   }
 }
 
-// Mapping dispatch to props for accessing storeDecodedToken action
 const mapDispatchToProps = (dispatch) => {
   return {
     storeDecodedToken: (decodedToken) =>
@@ -328,4 +269,4 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 // Connecting LoginPage component to Redux store
-export default connect(null, mapDispatchToProps)(LoginPage);
+export default connect(null, mapDispatchToProps)(LoginRedesign);
