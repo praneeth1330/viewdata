@@ -18,7 +18,7 @@ import "./login.scss";
 import { auth, provider } from "../config";
 import { signInWithPopup } from "firebase/auth";
 
-// Importing Redux related functionalities
+// Importing Redux  functionalities
 import { storeDecodedToken } from "../redux/action";
 import { connect } from "react-redux";
 
@@ -104,6 +104,7 @@ export class LoginPage extends Component<{}, LoginPageState> {
         const accessToken = auth.currentUser.stsTokenManager.accessToken;
         console.log("accesstoken", accessToken);
         // Update the component state with the access token
+        console.log("auth user", auth?.currentUser?.uid);
         this.setState({ accessToken });
 
         try {
@@ -203,10 +204,12 @@ export class LoginPage extends Component<{}, LoginPageState> {
             </div>
 
             <p className="lorem">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae quas
-              beatae minima. Non minima itaque exercitationem ut possimus
-              molestias suscipit consequatur consequuntur, nisi perspiciatis
-              pariatur! Amet id quam ipsum deserunt!
+              Explore the Depths of Data: Your Ultimate Destination for Dynamic
+              Charts and Graphs. Dive into a World of Visual Insights with Our
+              Comprehensive Collection of Charts. Unveil Trends, Patterns, and
+              Analysis with Ease. Empower Your Decision-Making Process with
+              Clear, Concise Visualizations. Discover the Power of Data
+              Visualization Today
             </p>
             <h3>Please sign in to continue </h3>
             <p>By Signing you will access best features</p>
@@ -303,8 +306,8 @@ export class LoginPage extends Component<{}, LoginPageState> {
           <div className="left-text">
             <h2>Simplest way to view your data</h2>
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate
-              obcaecati sequi perspiciatis inventore
+              Simplify data analysis with our intuitive visualization tools.
+              Experience effortless insights at your fingertips."
             </p>
           </div>
           <div className="left-image">

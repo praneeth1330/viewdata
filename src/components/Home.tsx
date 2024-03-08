@@ -96,9 +96,7 @@ class Home extends Component<HomeProps, State> {
                 value={selectedState}
                 onChange={this.handleStateChange}
               >
-                <option value="" disabled selected>
-                  Select a state
-                </option>
+                <option value="">All Graphs Data</option>
                 {/* Mapping through all graphs to populate dropdown */}
                 {graphs.map((graph, index) => (
                   <option key={index} value={graph[0].registered_state}>

@@ -185,11 +185,24 @@ class NewGraph extends Component<GraphProps, GraphState> {
               <div className="company-data">
                 {/* Long text content */}
                 <p>
-                  Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                  Cupiditate dolor temporibus cum repudiandae! Nesciunt
-                  reprehenderit obcaecati eaque architecto aspernatur dolores
-                  atque illum mollitia? Fugiat corporis praesentium pariatur
-                  illum nemo magni?
+                  Our charting tool offers a user-friendly interface, making
+                  data visualization effortless. <br /> Customize your charts
+                  with various colors, styles, and data points to suit your
+                  needs. <br />
+                  Easily import your data sets and generate insightful visuals
+                  in minutes. <br /> Explore trends, patterns, and correlations
+                  with our comprehensive range of chart types. <br /> Gain a
+                  deeper understanding of your data through interactive features
+                  like zooming and filtering. <br /> Collaborate with team
+                  members by sharing and exporting your charts seamlessly.{" "}
+                  <br /> Our charts are responsive and compatible across
+                  multiple devices for convenience. <br /> Stay up-to-date with
+                  real-time data updates, ensuring your visuals reflect the
+                  latest information. <br /> Access advanced analytics tools to
+                  enhance your charting experience and uncover actionable
+                  insights. <br /> Whether you're a beginner or a seasoned
+                  analyst, our charting platform caters to all skill levels,
+                  empowering you to make informed decisions
                 </p>
                 <p className="paragraph">lorem1000</p>
               </div>

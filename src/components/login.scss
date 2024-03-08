@@ -15,6 +15,7 @@
     @include flx-c();
     padding: 10% 0;
     border: 1px solid $text-light;
+
     @media (max-width: 768px) {
     }
     .uper-text {
@@ -23,6 +24,8 @@
       padding: 0 10%;
       justify-content: center;
       align-items: start;
+      // color: transparent;
+      background-color: transparent;
       @media (max-width: 768px) {
         padding: 0 5%;
       }
@@ -43,6 +46,7 @@
       }
       .lorem {
         color: $text-light;
+        // font-size: small;
         @media (max-width: 768px) {
           display: flex;
           flex-wrap: wrap;
