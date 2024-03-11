@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { Link, useParams, useSearchParams } from "react-router-dom";
-import Chart, { ApexChartType } from "react-apexcharts";
+import Chart from "react-apexcharts";
 import NavBar from "./NavBar";
 import { MdOutlineArrowBackIosNew } from "react-icons/md";
 import "./graph.scss";
-
+import { MdOutlineFileDownload } from "react-icons/md";
 // Define types for graph data
 interface GraphData {
   company_name: string;
@@ -140,8 +140,13 @@ const Graph: React.FC<Props> = ({ graphs }) => {
           </div>
           {/* Table for graph data */}
           <div className="table">
-            <p>Tabular data of company's</p>
-            <button onClick={downloadTableData}>Download Table Data</button>
+            <div className="table-text">
+              <p>Tabular data of company's</p>
+              <MdOutlineFileDownload
+                onClick={downloadTableData}
+                className="download-button"
+              />
+            </div>
             <table>
               <thead>
                 <tr>

@@ -59,13 +59,13 @@
         .chart-data {
           width: auto;
           height: 300px;
-          border: 2px solid black;
+          border: 1px solid #dddddd;
         }
 
         @media screen and (max-width: 768px) {
           .chart-data {
             height: 200px;
-            border: 2px solid black;
+            border: 1px solid #dddddd;
             padding: 2%;
           }
         }
@@ -103,7 +103,7 @@
         }
       }
       .company-details {
-        border: 1px solid black;
+        border: 1px solid #dddddd;
         padding: 1%;
         @media (max-width: 768px) {
           margin: 0 5%;
@@ -120,5 +120,19 @@
         }
       }
     }
+  }
+}
+
+.table-text {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .download-button {
+    background-color: $primary-color;
+    border: 0;
+    padding: 5px;
+    color: white;
+    border-radius: 100%;
+    font-size: large;
   }
 }

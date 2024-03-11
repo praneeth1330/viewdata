@@ -1,62 +1,48 @@
-// write html for sso with google , apple and also with email and password
 import React, { Component } from "react";
 import "./loginRedesign.scss";
 import Google from "../images/google.png";
 import { FaApple } from "react-icons/fa";
-// import React, { Component } from "react";
-import { Link } from "react-router-dom"; // Import
-
-// Importing dependencies
+import { Link, Navigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
-
-// import "./login.scss";
-
-// Importing Firebase authentication and configuration
 import { auth, provider } from "../config";
 import { signInWithPopup } from "firebase/auth";
-
-// Importing Redux  functionalities
 import { storeDecodedToken } from "../redux/action";
 import { connect } from "react-redux";
-
 import { db } from "../config";
 import { child, ref, set, get } from "firebase/database";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
-// Defining state interface for LoginPage component
 interface LoginPageState {
   signIn: boolean;
   email: string;
   password: string;
   emailError: string;
   passwordError: string;
-  value: any;
   accessToken: any;
   decode: any;
   databaseData: any;
+  redirect: boolean;
 }
 
 export class LoginRedesign extends Component {
-  constructor(props: {}) {
-    super(props);
-    this.state = {
-      signIn: true,
-      email: "",
-      password: "",
-      emailError: "",
-      passwordError: "",
-      value: "",
-      accessToken: "",
-      decode: {},
-      databaseData: {},
-    };
-  }
+  state: LoginPageState = {
+    signIn: true,
+    email: "",
+    password: "",
+    emailError: "",
+    passwordError: "",
+    accessToken: "",
+    decode: {},
+    databaseData: {},
+    redirect: false,
+  };
+
   cardChange = () => {
     this.setState((prevState) => ({
       signIn: !prevState.signIn,
     }));
   };
 
-  // Function to handle input changes
   handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     this.setState({
@@ -64,7 +50,6 @@ export class LoginRedesign extends Component {
     } as Pick<LoginPageState, keyof LoginPageState>);
   };
 
-  // Function to validate form inputs
   validateForm = () => {
     let isValid = true;
     const { email, password } = this.state;
@@ -88,36 +73,23 @@ export class LoginRedesign extends Component {
     return isValid;
   };
 
-  // componentDidMount(): void {
-  //   this.readFromdatabase();
-  // }
-  // Function to handle Google sign-in
   handleGoogleSignIn = () => {
     signInWithPopup(auth, provider)
       .then(() => {
         const accessToken = auth.currentUser.stsTokenManager.accessToken;
-        console.log("accesstoken", accessToken);
-        // Update the component state with the access token
-        console.log("auth user", auth?.currentUser?.uid);
         this.setState({ accessToken });
 
         try {
           const decoded = jwtDecode(accessToken);
           this.setState({ decode: decoded });
           const isUserExists = this.readFromdatabase();
-          // this.readFromdatabase();
 
           if (!isUserExists) {
             this.writeToDataBase();
-          } else {
-            console.log("user already exists in the database");
           }
-          this.props.storeDecodedToken(decoded);
-          console.log("decoded token", decoded);
-          console.log("decode token", this.state.decode.user_id);
 
-          // Redirect to the home page after successful Google SSO
-          // window.location.href = "/home";
+          this.props.storeDecodedToken(decoded);
+          this.setState({ redirect: true });
         } catch (error) {
           console.error("Error decoding token:", error);
         }
@@ -127,7 +99,6 @@ export class LoginRedesign extends Component {
       });
   };
 
-  // Function to handle form submission
   handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (this.validateForm()) {
@@ -137,17 +108,13 @@ export class LoginRedesign extends Component {
     }
   };
 
-  // write to database
-
   writeToDataBase = () => {
     const { decode } = this.state;
-
     const dbRef = ref(db);
     const userRef = child(dbRef, decode.user_id);
 
     get(userRef).then((snapshot) => {
       if (!snapshot.exists()) {
-        // If user data doesn't exist, write to the database
         set(userRef, {
           name: decode.name,
           email: decode.email,
@@ -173,12 +140,7 @@ export class LoginRedesign extends Component {
     get(userRef).then((snapshot) => {
       if (snapshot.exists()) {
         const userData = snapshot.val();
-        console.log("data", snapshot.val());
         this.setState({ databaseData: userData });
-        console.log(
-          "databaseData login page ",
-          this.state.databaseData.user_id
-        );
         return true;
       } else {
         console.log("No data found");
@@ -186,8 +148,13 @@ export class LoginRedesign extends Component {
       }
     });
   };
+
   render() {
-    const { signIn, email, password, emailError, passwordError } = this.state;
+    const { signIn, email, password, emailError, passwordError, redirect } =
+      this.state;
+    if (redirect) {
+      return <Navigate to="/home" />;
+    }
 
     return (
       <div className="main_container">
@@ -204,7 +171,6 @@ export class LoginRedesign extends Component {
               <div className="login-sso">
                 <div className="google-sso">
                   <button onClick={this.handleGoogleSignIn}>
-                    {" "}
                     <img src={Google} alt="" width={15} />
                     Sign in with Google
                   </button>
@@ -268,5 +234,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-// Connecting LoginPage component to Redux store
 export default connect(null, mapDispatchToProps)(LoginRedesign);

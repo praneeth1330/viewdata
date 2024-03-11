@@ -13,6 +13,7 @@ import logo_nav from "../images/nav-logo.png";
 import Profile from "../images/profile.jpg";
 import { Link, Navigate } from "react-router-dom";
 import "./nav-bar.scss";
+import debounce from "lodash/debounce";
 
 interface NavBarProps {
   decodedToken: any;
@@ -49,6 +50,16 @@ class NavBar extends Component<NavBarProps, NavBarState> {
     }
   };
 
+  debouncedHandleSearchChange = debounce((value) => {
+    this.setState({ search: value });
+    this.props.dispatch(searchQuery(value));
+  }, 300);
+
+  handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+    this.debouncedHandleSearchChange(value);
+  };
+
   toggleMobileMenu = () => {
     this.setState((prevState) => ({
       showMenu: !prevState.showMenu,
@@ -61,12 +72,24 @@ class NavBar extends Component<NavBarProps, NavBarState> {
     }));
   };
 
-  handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target;
-    this.setState({ search: value });
-    this.props.dispatch(searchQuery(value));
-  };
+  // handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
+  //   const { value } = event.target;
+  //   this.setState({ search: value });
+  //   this.props.dispatch(searchQuery(value));
+  // };
 
+  // handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   const { search } = this.state;
+  //   this.props.dispatch(searchQuery(search));
+
+  //   const regex = new RegExp(search, "i");
+  //   const searchResults = this.props.graphs.filter(
+  //     (item) =>
+  //       regex.test(item[0].registered_state) || regex.test(item.description)
+  //   );
+  //   console.log("Search Results:", searchResults);
+  // };
   handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { search } = this.state;

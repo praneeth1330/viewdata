@@ -7,6 +7,7 @@ import NavBar from "./NavBar";
 import { RootState } from "../redux/store";
 import { FaSpinner } from "react-icons/fa";
 import "./home.scss";
+import { IoIosArrowRoundBack } from "react-icons/io";
 
 // Define the props for the Home component
 interface HomeProps {
@@ -47,6 +48,10 @@ class Home extends Component<HomeProps, State> {
     filteredGraphs(filteredData); // Dispatch filtered graphs action
     console.log("store data", filteredData); // Log filtered data
   };
+  allgraphs = () => {
+    this.setState({ selectedState: "" });
+    this.props.filteredGraphs(this.props.graphs);
+  };
 
   // Function to shuffle colors randomly
   shuffleColors = () => {
@@ -57,8 +62,6 @@ class Home extends Component<HomeProps, State> {
     }
     return colors;
   };
-
-  // const shuffleColors = Math.random() > 0.2 && Math.random() < 0.5 ? "#1f943e" :Math.random() >0.5 ? "#05387b" : "#8e2424";
 
   render() {
     const { loading, graphs } = this.props;
@@ -90,13 +93,25 @@ class Home extends Component<HomeProps, State> {
             <h3>Displaying the data of the company's Annual Import</h3>
             <div className="select-dropdown">
               {/* Dropdown to select state */}
+              {filteredGraphs.length > 0 ? (
+                <IoIosArrowRoundBack
+                  onClick={this.allgraphs}
+                  className="back-select"
+                />
+              ) : (
+                ""
+              )}
+
               <select
                 name="stateSelector"
                 id="stateSelector"
                 value={selectedState}
                 onChange={this.handleStateChange}
               >
-                <option value="">All Graphs Data</option>
+                <option value="" disabled selected>
+                  All Graphs Data
+                </option>
+
                 {/* Mapping through all graphs to populate dropdown */}
                 {graphs.map((graph, index) => (
                   <option key={index} value={graph[0].registered_state}>
@@ -155,19 +170,7 @@ class Home extends Component<HomeProps, State> {
                     {/* Rendering all graphs */}
                     {graphs.map((data, index) => {
                       const randomMap = Math.random() > 0.5 ? "line" : "bar";
-                      // const shuffleColors = () => {
-                      //   const colors = [
-                      //     "#1f943e",
-                      //     "#05387b",
-                      //     "#8e2424",
-                      //     "#fcdb1c",
-                      //   ];
-                      //   for (let i = colors.length - 1; i > 0; i--) {
-                      //     const j = Math.floor(Math.random() * (i + 1));
-                      //     [colors[i], colors[j]] = [colors[j], colors[i]];
-                      //   }
-                      //   return colors;
-                      // };
+
                       const color =
                         Math.random() > 0.2 && Math.random() < 0.4
                           ? "#1f943e"

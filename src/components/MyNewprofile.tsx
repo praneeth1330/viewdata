@@ -5,8 +5,14 @@ import { connect } from "react-redux";
 import NavBar from "./NavBar";
 import { CiEdit } from "react-icons/ci";
 import { CiCircleCheck } from "react-icons/ci";
-import { db } from "../config";
+import { CiCircleRemove } from "react-icons/ci";
+import { db, storage } from "../config";
 import { child, get, ref, set } from "firebase/database";
+import {
+  getDownloadURL,
+  ref as storageRef,
+  uploadBytes,
+} from "firebase/storage";
 import NavBarNav from "./NavBarNav";
 
 export class MyProfile extends Component {
@@ -15,19 +21,21 @@ export class MyProfile extends Component {
     this.state = {
       editedName: "",
       isEditingName: false,
-      databaseData: null, // Initialize to null
+      databaseData: null,
+      isEditingPicture: false,
+      profilePicture: null,
     };
   }
 
   componentDidMount() {
-    this.readDataFromDatabase(); // Fetch user data when component mounts
+    this.readDataFromDatabase();
   }
 
   handleEditName = () => {
     const { databaseData } = this.state;
     if (databaseData) {
       this.setState({
-        editedName: databaseData.name, // Use name from database
+        editedName: databaseData.name,
         isEditingName: true,
       });
     }
@@ -42,10 +50,64 @@ export class MyProfile extends Component {
   handleSaveName = () => {
     const { editedName } = this.state;
     this.updateNameInDatabase(editedName);
-    // No need to read data again, as the updateNameInDatabase will update the state with new data
     this.setState({
       isEditingName: false,
     });
+  };
+
+  handleCancelEdit = () => {
+    this.setState({
+      isEditingName: false,
+      editedName: "",
+    });
+  };
+
+  handleEditPicture = () => {
+    this.setState({
+      isEditingPicture: true,
+    });
+  };
+
+  handleCancelPictureEdit = () => {
+    this.setState({
+      isEditingPicture: false,
+      profilePicture: null,
+    });
+  };
+
+  handlePictureChange = (e) => {
+    if (e.target.files[0]) {
+      this.setState({
+        profilePicture: e.target.files[0],
+      });
+    }
+  };
+
+  handleSavePicture = () => {
+    const { profilePicture } = this.state;
+    const { decodedToken } = this.props;
+
+    if (profilePicture && decodedToken) {
+      const storageFileRef = storageRef(
+        storage,
+        `profilePictures/${decodedToken.user_id}`
+      );
+      uploadBytes(storageFileRef, profilePicture)
+        .then(() => {
+          console.log("Profile picture uploaded successfully");
+          return getDownloadURL(storageFileRef);
+        })
+        .then((downloadURL) => {
+          this.updatePictureInDatabase(downloadURL);
+          this.setState({
+            isEditingPicture: false,
+            profilePicture: null,
+          });
+        })
+        .catch((error) => {
+          console.error("Error uploading profile picture:", error);
+        });
+    }
   };
 
   readDataFromDatabase = () => {
@@ -81,7 +143,6 @@ export class MyProfile extends Component {
       set(userRef, { ...this.state.databaseData, name: newName })
         .then(() => {
           console.log("Name updated successfully in the database");
-          // Update state with the new name
           this.setState((prevState) => ({
             databaseData: { ...prevState.databaseData, name: newName },
           }));
@@ -94,8 +155,34 @@ export class MyProfile extends Component {
     }
   };
 
+  updatePictureInDatabase = (downloadURL) => {
+    const { decodedToken } = this.props;
+
+    if (decodedToken) {
+      const dbRef = ref(db);
+      const userRef = child(dbRef, decodedToken.user_id);
+
+      set(userRef, { ...this.state.databaseData, picture: downloadURL })
+        .then(() => {
+          console.log("Profile picture updated successfully in the database");
+          this.setState((prevState) => ({
+            databaseData: { ...prevState.databaseData, picture: downloadURL },
+          }));
+        })
+        .catch((error) => {
+          console.error(
+            "Error updating profile picture in the database:",
+            error
+          );
+        });
+    } else {
+      console.log("No decoded token available");
+    }
+  };
+
   render() {
-    const { databaseData, isEditingName, editedName } = this.state;
+    const { databaseData, isEditingName, editedName, isEditingPicture } =
+      this.state;
 
     return (
       <div className="">
@@ -120,6 +207,23 @@ export class MyProfile extends Component {
                   alt=""
                   className="profile-image"
                 />
+                <div className="edit-profile">
+                  {isEditingPicture ? (
+                    <div className="">
+                      <input type="file" onChange={this.handlePictureChange} />
+                      <CiCircleCheck
+                        onClick={this.handleSavePicture}
+                        className="edit"
+                      />
+                      <CiCircleRemove
+                        onClick={this.handleCancelPictureEdit}
+                        className="edit"
+                      />
+                    </div>
+                  ) : (
+                    <CiEdit onClick={this.handleEditPicture} className="edit" />
+                  )}
+                </div>
               </div>
 
               <div className="profile-details">
@@ -127,23 +231,28 @@ export class MyProfile extends Component {
                 <div className="details">
                   <p className="details-headers">Name:</p>
                   {isEditingName ? (
-                    <input
-                      type="text"
-                      value={editedName}
-                      onChange={this.handleChangeName}
-                    />
+                    <div>
+                      <input
+                        type="text"
+                        value={editedName}
+                        onChange={this.handleChangeName}
+                      />
+                      <CiCircleCheck
+                        onClick={this.handleSaveName}
+                        className="edit"
+                      />
+                      <CiCircleRemove
+                        onClick={this.handleCancelEdit}
+                        className="edit"
+                      />
+                    </div>
                   ) : (
-                    <p>
-                      {databaseData ? databaseData.name : "exapmle name..."}
-                    </p>
-                  )}
-                  {isEditingName ? (
-                    <CiCircleCheck
-                      onClick={this.handleSaveName}
-                      className="edit"
-                    />
-                  ) : (
-                    <CiEdit onClick={this.handleEditName} className="edit" />
+                    <>
+                      <p>
+                        {databaseData ? databaseData.name : "exapmle name..."}
+                      </p>
+                      <CiEdit onClick={this.handleEditName} className="edit" />
+                    </>
                   )}
                 </div>
                 <div className="details">
