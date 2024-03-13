@@ -5,13 +5,13 @@ import { MdOutlineNotificationsNone } from "react-icons/md";
 import { FaRegUserCircle } from "react-icons/fa";
 import { LuMessageSquare } from "react-icons/lu";
 import { LuUserCircle2 } from "react-icons/lu";
-import { TbSettings } from "react-icons/tb";
+
 import { LuHelpCircle } from "react-icons/lu";
 import ProfileMenu from "./ProfileMenu";
 import { RiLogoutCircleLine } from "react-icons/ri";
 import logo_nav from "../images/nav-logo.png";
 import Profile from "../images/profile.jpg";
-import { Link, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "./nav-bar.scss";
 import debounce from "lodash/debounce";
 
@@ -50,12 +50,12 @@ class NavBar extends Component<NavBarProps, NavBarState> {
     }
   };
 
-  debouncedHandleSearchChange = debounce((value) => {
+  debouncedHandleSearchChange = debounce((value: any) => {
     this.setState({ search: value });
     this.props.dispatch(searchQuery(value));
-  }, 300);
+  }, 100);
 
-  handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
+  handleSearchChange = (event: any) => {
     const { value } = event.target;
     this.debouncedHandleSearchChange(value);
   };
@@ -72,25 +72,7 @@ class NavBar extends Component<NavBarProps, NavBarState> {
     }));
   };
 
-  // handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
-  //   const { value } = event.target;
-  //   this.setState({ search: value });
-  //   this.props.dispatch(searchQuery(value));
-  // };
-
-  // handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   const { search } = this.state;
-  //   this.props.dispatch(searchQuery(search));
-
-  //   const regex = new RegExp(search, "i");
-  //   const searchResults = this.props.graphs.filter(
-  //     (item) =>
-  //       regex.test(item[0].registered_state) || regex.test(item.description)
-  //   );
-  //   console.log("Search Results:", searchResults);
-  // };
-  handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  handleSearchSubmit = (e: any) => {
     e.preventDefault();
     const { search } = this.state;
     this.props.dispatch(searchQuery(search));
@@ -118,9 +100,9 @@ class NavBar extends Component<NavBarProps, NavBarState> {
           <ul>
             {searchResults.map((result, index) => (
               <Link to="/graph ">
-                <li key={index}>
-                  {[...new Set(result.map((state) => state.registered_state))]}
-                </li>
+                {result.map((state: any) => {
+                  return <li key={index}>{state[0].registered_state}</li>;
+                })}
               </Link>
             ))}
           </ul>

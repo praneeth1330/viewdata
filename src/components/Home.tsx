@@ -4,20 +4,18 @@ import { fetchGraphs, filteredGraphs } from "../redux/action"; // Importing Redu
 import Chart from "react-apexcharts";
 import { Link } from "react-router-dom";
 import NavBar from "./NavBar";
-import { RootState } from "../redux/store";
+
 import { FaSpinner } from "react-icons/fa";
 import "./home.scss";
 import { IoIosArrowRoundBack } from "react-icons/io";
 
-// Define the props for the Home component
 interface HomeProps {
   loading: boolean;
-  graphs: GraphData[]; // Assuming GraphData is defined elsewhere
+  graphs: any[];
   fetchGraphs: () => void;
-  filteredGraphs: (graphs: GraphData[]) => void;
+  filteredGraphs: (graphs: any[]) => void;
 }
 
-// Define the state for the Home component
 interface State {
   selectedState: string;
 }
@@ -28,11 +26,11 @@ class Home extends Component<HomeProps, State> {
   };
 
   componentDidMount() {
-    this.props.fetchGraphs(); // Fetch graphs data when component mounts
+    this.props.fetchGraphs(); // Fetching graphs data when component mounts
   }
 
   // Handler for state change in the dropdown
-  handleStateChange = (event: ChangeEvent<HTMLSelectElement>) => {
+  handleStateChange = (event: any) => {
     const selectedState = event.target.value;
     this.setState({ selectedState }, () => {
       this.filterGraphs(selectedState); // Filter graphs based on selected state
@@ -46,7 +44,7 @@ class Home extends Component<HomeProps, State> {
       (graph) => graph[0].registered_state === selectedState
     );
     filteredGraphs(filteredData); // Dispatch filtered graphs action
-    console.log("store data", filteredData); // Log filtered data
+    console.table("store data", filteredData); // Log filtered data
   };
   allgraphs = () => {
     this.setState({ selectedState: "" });
@@ -112,12 +110,16 @@ class Home extends Component<HomeProps, State> {
                   All Graphs Data
                 </option>
 
-                {/* Mapping through all graphs to populate dropdown */}
-                {graphs.map((graph, index) => (
-                  <option key={index} value={graph[0].registered_state}>
-                    {[...new Set(graph.map((state) => state.registered_state))]}
-                  </option>
-                ))}
+                {graphs
+                  .reduce(
+                    (acc, curr) => [...acc, curr?.[0]?.registered_state],
+                    []
+                  )
+                  ?.map((state: string, index: number) => (
+                    <option key={index} value={state}>
+                      {state}
+                    </option>
+                  ))}
               </select>
             </div>
           </div>
@@ -140,7 +142,7 @@ class Home extends Component<HomeProps, State> {
                               id: `basic-bar-${index}`,
                             },
                             xaxis: {
-                              categories: filteredGraph.map((record) =>
+                              categories: filteredGraph.map((record: any) =>
                                 record.company_name.slice(0, 5)
                               ),
                             },
@@ -150,7 +152,7 @@ class Home extends Component<HomeProps, State> {
                             {
                               name: `series-${index}`,
                               data: filteredGraph.map(
-                                (record) => record.paidup_capital
+                                (record: any) => record.paidup_capital
                               ),
                             },
                           ]}
@@ -215,11 +217,7 @@ class Home extends Component<HomeProps, State> {
                               />
                             </div>
                             <h5 style={{ margin: 0 }}>
-                              {[
-                                ...new Set(
-                                  data.map((state) => state.registered_state)
-                                ),
-                              ]}
+                              {data[0].registered_state}
                             </h5>
                           </Link>
                         </div>
@@ -237,15 +235,15 @@ class Home extends Component<HomeProps, State> {
 }
 
 // Maping Redux state to component props
-const mapStateToProps = (state: RootState) => ({
+const mapStateToProps = (state: any) => ({
   graphs: state.graphs.graphs,
   loading: state.graphs.loading,
 });
 
 // Maping Redux dispatch actions to component props
-const mapDispatchToProps = (dispatch: Dispatch) => ({
+const mapDispatchToProps = (dispatch: any) => ({
   fetchGraphs: () => dispatch(fetchGraphs()),
-  filteredGraphs: (graphs: GraphData[]) => dispatch(filteredGraphs(graphs)), // Added dispatch for filtered graphs
+  filteredGraphs: (graphs: any[]) => dispatch(filteredGraphs(graphs)), // Added dispatch for filtered graphs
 });
 
 // Connecting the component to Redux store

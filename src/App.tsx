@@ -13,10 +13,12 @@ import MyProfileNew from "./components/MyProfileNew";
 import MyNewprofile from "./components/MyNewprofile";
 import NewLogin from "./components/NewLogin";
 import LoginRedesign from "./components/LoginRedesign";
+import NavBar from "./components/NavBar";
 export default class App extends Component {
   render() {
     return (
       <Provider store={store}>
+        {/* <NavBar /> */}
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<LoginRedesign />} />
