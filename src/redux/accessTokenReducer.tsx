@@ -5,10 +5,10 @@ interface AccessState {
 }
 
 const initialState: AccessState = {
-  decodedToken: {},
+  decodedToken: null,
 };
 
-const accessTokenReducer = (state = initialState, action: any) => {
+const accessTokenReducer = (state = initialState, action) => {
   switch (action.type) {
     case STORE_DECODED_TOKEN:
       return {

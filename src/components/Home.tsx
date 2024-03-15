@@ -9,13 +9,15 @@ import { FaSpinner } from "react-icons/fa";
 import "./home.scss";
 import { IoIosArrowRoundBack } from "react-icons/io";
 
+// Define the props for the Home component
 interface HomeProps {
   loading: boolean;
-  graphs: any[];
+  graphs: any[]; // Assuming GraphData is defined elsewhere
   fetchGraphs: () => void;
   filteredGraphs: (graphs: any[]) => void;
 }
 
+// Define the state for the Home component
 interface State {
   selectedState: string;
 }
@@ -44,7 +46,7 @@ class Home extends Component<HomeProps, State> {
       (graph) => graph[0].registered_state === selectedState
     );
     filteredGraphs(filteredData); // Dispatch filtered graphs action
-    console.table("store data", filteredData); // Log filtered data
+    console.log("store data", filteredData); // Log filtered data
   };
   allgraphs = () => {
     this.setState({ selectedState: "" });
@@ -110,16 +112,12 @@ class Home extends Component<HomeProps, State> {
                   All Graphs Data
                 </option>
 
-                {graphs
-                  .reduce(
-                    (acc, curr) => [...acc, curr?.[0]?.registered_state],
-                    []
-                  )
-                  ?.map((state: string, index: number) => (
-                    <option key={index} value={state}>
-                      {state}
-                    </option>
-                  ))}
+                {/* Mapping through all graphs to populate dropdown */}
+                {graphs.map((graph, index) => (
+                  <option key={index} value={graph[0].registered_state}>
+                    {[...new Set(graph.map((state) => state.registered_state))]}
+                  </option>
+                ))}
               </select>
             </div>
           </div>
@@ -142,7 +140,7 @@ class Home extends Component<HomeProps, State> {
                               id: `basic-bar-${index}`,
                             },
                             xaxis: {
-                              categories: filteredGraph.map((record: any) =>
+                              categories: filteredGraph.map((record) =>
                                 record.company_name.slice(0, 5)
                               ),
                             },
@@ -152,7 +150,7 @@ class Home extends Component<HomeProps, State> {
                             {
                               name: `series-${index}`,
                               data: filteredGraph.map(
-                                (record: any) => record.paidup_capital
+                                (record) => record.paidup_capital
                               ),
                             },
                           ]}
@@ -217,7 +215,11 @@ class Home extends Component<HomeProps, State> {
                               />
                             </div>
                             <h5 style={{ margin: 0 }}>
-                              {data[0].registered_state}
+                              {[
+                                ...new Set(
+                                  data.map((state) => state.registered_state)
+                                ),
+                              ]}
                             </h5>
                           </Link>
                         </div>
@@ -235,13 +237,13 @@ class Home extends Component<HomeProps, State> {
 }
 
 // Maping Redux state to component props
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: RootState) => ({
   graphs: state.graphs.graphs,
   loading: state.graphs.loading,
 });
 
 // Maping Redux dispatch actions to component props
-const mapDispatchToProps = (dispatch: any) => ({
+const mapDispatchToProps = (dispatch: Dispatch) => ({
   fetchGraphs: () => dispatch(fetchGraphs()),
   filteredGraphs: (graphs: any[]) => dispatch(filteredGraphs(graphs)), // Added dispatch for filtered graphs
 });
