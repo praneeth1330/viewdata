@@ -3,6 +3,7 @@ import { Dispatch } from "redux";
 export const FILTERED_GRAPHS = "FILTERED_GRAPHS";
 export const STORE_DECODED_TOKEN = "STORE_DECODED_TOKEN";
 export const SEARCH_RESULT = "SEARCH_RESULT";
+export const SEARCH_DATA = "SEARCH_DATA";
 
 export const fetchGraphs = () => {
   return async (dispatch: Dispatch) => {
@@ -45,15 +46,20 @@ export const filteredGraphs = (filteredGraphs: any[]) => ({
   payload: filteredGraphs,
 });
 
-export const storeDecodedToken = (decodedToken) => {
+export const storeDecodedToken = (decodedToken: any) => {
   return {
     type: STORE_DECODED_TOKEN,
     payload: decodedToken,
   };
 };
-export const searchQuery = (search) => {
+export const searchQuery = (search: string) => {
   return {
     type: SEARCH_RESULT,
     payload: search,
   };
 };
+
+export const searchData = (results: any) => ({
+  type: SEARCH_DATA,
+  payload: results,
+});

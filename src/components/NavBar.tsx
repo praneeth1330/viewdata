@@ -1,6 +1,6 @@
 import React, { Component, MouseEvent, ChangeEvent } from "react";
 import { connect } from "react-redux";
-import { searchQuery } from "../redux/action";
+import { searchData, searchQuery } from "../redux/action";
 import { MdOutlineNotificationsNone } from "react-icons/md";
 import { FaRegUserCircle } from "react-icons/fa";
 import { LuMessageSquare } from "react-icons/lu";
@@ -72,24 +72,6 @@ class NavBar extends Component<NavBarProps, NavBarState> {
     }));
   };
 
-  // handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
-  //   const { value } = event.target;
-  //   this.setState({ search: value });
-  //   this.props.dispatch(searchQuery(value));
-  // };
-
-  // handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   const { search } = this.state;
-  //   this.props.dispatch(searchQuery(search));
-
-  //   const regex = new RegExp(search, "i");
-  //   const searchResults = this.props.graphs.filter(
-  //     (item) =>
-  //       regex.test(item[0].registered_state) || regex.test(item.description)
-  //   );
-  //   console.log("Search Results:", searchResults);
-  // };
   handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { search } = this.state;
@@ -100,6 +82,7 @@ class NavBar extends Component<NavBarProps, NavBarState> {
       (item) =>
         regex.test(item[0]?.registered_state) || regex.test(item.description)
     );
+    this.props.dispatch(searchData(searchResults));
     console.log("Search Results:", searchResults);
   };
 
