@@ -98,7 +98,7 @@ class NavBar extends Component<NavBarProps, NavBarState> {
     const regex = new RegExp(search, "i");
     const searchResults = this.props.graphs.filter(
       (item) =>
-        regex.test(item[0].registered_state) || regex.test(item.description)
+        regex.test(item[0]?.registered_state) || regex.test(item.description)
     );
     console.log("Search Results:", searchResults);
   };
@@ -109,7 +109,7 @@ class NavBar extends Component<NavBarProps, NavBarState> {
     const regex = new RegExp(search, "i");
     const searchResults = graphs.filter(
       (item) =>
-        regex.test(item[0].registered_state) || regex.test(item.description)
+        regex.test(item[0]?.registered_state) || regex.test(item.description)
     );
 
     if (search.trim() !== "") {
@@ -260,7 +260,7 @@ class NavBar extends Component<NavBarProps, NavBarState> {
 }
 
 const mapStateToProps = (state: any) => ({
-  decodedToken: state.auth.decodedToken,
+  decodedToken: state.auth?.decodedToken,
   graphs: state.graphs.graphs,
 });
 

@@ -56,6 +56,7 @@ describe("NavBar", () => {
       fireEvent.click(suggestionElement);
     });
 
+    // Waiting for the user to be redirected to the correct page
     // Verifying if the user is redirected to the correct page
     waitFor(() => {
       expect(window.location.href).toBe("http://localhost/graph");

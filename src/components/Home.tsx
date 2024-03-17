@@ -8,11 +8,13 @@ import NavBar from "./NavBar";
 import { FaSpinner } from "react-icons/fa";
 import "./home.scss";
 import { IoIosArrowRoundBack } from "react-icons/io";
+import { ThunkDispatch } from "redux-thunk";
+import { AnyAction } from "redux";
 
 // Define the props for the Home component
 interface HomeProps {
   loading: boolean;
-  graphs: any[]; // Assuming GraphData is defined elsewhere
+  graphs: any[];
   fetchGraphs: () => void;
   filteredGraphs: (graphs: any[]) => void;
 }
@@ -21,6 +23,7 @@ interface HomeProps {
 interface State {
   selectedState: string;
 }
+// type ThunkAction = (dispatch: ThunkDispatch<any, any, AnyAction>) => void;
 
 class Home extends Component<HomeProps, State> {
   state: State = {
@@ -112,12 +115,18 @@ class Home extends Component<HomeProps, State> {
                   All Graphs Data
                 </option>
 
-                {/* Mapping through all graphs to populate dropdown */}
-                {graphs.map((graph, index) => (
-                  <option key={index} value={graph[0].registered_state}>
-                    {[...new Set(graph.map((state) => state.registered_state))]}
-                  </option>
-                ))}
+                {graphs.reduce((acc, graph) => {
+                  const states = graph.map((state) => state.registered_state);
+                  const uniqueStates = [...new Set(states)];
+                  return [
+                    ...acc,
+                    ...uniqueStates.map((state) => (
+                      <option key={`${state}-${acc.length}`} value={state}>
+                        {state}
+                      </option>
+                    )),
+                  ];
+                }, [])}
               </select>
             </div>
           </div>
@@ -215,11 +224,12 @@ class Home extends Component<HomeProps, State> {
                               />
                             </div>
                             <h5 style={{ margin: 0 }}>
-                              {[
+                              {/* {[
                                 ...new Set(
                                   data.map((state) => state.registered_state)
                                 ),
-                              ]}
+                              ]} */}
+                              {data[0].registered_state}
                             </h5>
                           </Link>
                         </div>
@@ -237,15 +247,15 @@ class Home extends Component<HomeProps, State> {
 }
 
 // Maping Redux state to component props
-const mapStateToProps = (state: RootState) => ({
+const mapStateToProps = (state: any) => ({
   graphs: state.graphs.graphs,
   loading: state.graphs.loading,
 });
 
 // Maping Redux dispatch actions to component props
-const mapDispatchToProps = (dispatch: Dispatch) => ({
+const mapDispatchToProps = (dispatch: any) => ({
   fetchGraphs: () => dispatch(fetchGraphs()),
-  filteredGraphs: (graphs: any[]) => dispatch(filteredGraphs(graphs)), // Added dispatch for filtered graphs
+  filteredGraphs: (graphs: any[]) => dispatch(filteredGraphs(graphs)), //
 });
 
 // Connecting the component to Redux store
