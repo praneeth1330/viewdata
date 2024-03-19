@@ -184,11 +184,11 @@ export class LoginRedesign extends Component {
                 </div>
               </div>
 
-              <div className="or">
+              {/* <div className="or">
                 <hr /> or <hr />
-              </div>
+              </div> */}
 
-              <form className="Email-login" onSubmit={this.handleSubmit}>
+              {/* <form className="Email-login" onSubmit={this.handleSubmit}>
                 <div className="email">
                   <label htmlFor="email">Email</label>
                   <input
@@ -217,7 +217,7 @@ export class LoginRedesign extends Component {
                 </div>
                 <p className="forget">Forgot Password</p>
                 <button type="submit">Login</button>
-              </form>
+              </form> */}
             </div>
           </div>
           <div className="grid-item-right"></div>

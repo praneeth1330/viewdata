@@ -45,13 +45,13 @@ export const filteredGraphs = (filteredGraphs: any[]) => ({
   payload: filteredGraphs,
 });
 
-export const storeDecodedToken = (decodedToken) => {
+export const storeDecodedToken = (decodedToken: any) => {
   return {
     type: STORE_DECODED_TOKEN,
     payload: decodedToken,
   };
 };
-export const searchQuery = (search) => {
+export const searchQuery = (search: string) => {
   return {
     type: SEARCH_RESULT,
     payload: search,

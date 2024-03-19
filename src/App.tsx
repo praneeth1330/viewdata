@@ -8,10 +8,7 @@ import Home from "./components/Home";
 import Graph from "./components/Graph";
 import NewGraph from "./components/NewGraph";
 import MyProfile from "./components/MyProfile";
-import NewProfile from "./components/NewProfile";
-import MyProfileNew from "./components/MyProfileNew";
-import MyNewprofile from "./components/MyNewprofile";
-import NewLogin from "./components/NewLogin";
+
 import LoginRedesign from "./components/LoginRedesign";
 export default class App extends Component {
   render() {
@@ -21,7 +18,7 @@ export default class App extends Component {
           <Routes>
             <Route path="/" element={<LoginRedesign />} />
             <Route path="/home" element={<Home />} />
-            <Route path="/profile" element={<MyNewprofile />} />
+            <Route path="/profile" element={<MyProfile />} />
             <Route path="/graph" element={<NewGraph />} />
             <Route
               path="/graph-details/:id"

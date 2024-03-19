@@ -1,83 +1,71 @@
 import React from "react";
-import { render, screen, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import Home from "./Home";
 import { MemoryRouter } from "react-router-dom";
+import { thunk } from "redux-thunk";
+import "@testing-library/jest-dom";
+import "@testing-library/user-event";
+// src/setupTests.ts
 
-const mockStore = configureStore([]);
+const middleware = [thunk];
+const mockStore = configureStore(middleware);
 
 describe("Home component", () => {
   let store;
 
+  const props = {
+    loading: false,
+    graphs: [
+      [
+        {
+          registered_state: "California",
+          company_name: "Company A",
+          paidup_capital: 100,
+        },
+        {
+          registered_state: "California",
+          company_name: "Company B",
+          paidup_capital: 200,
+        },
+      ],
+      [
+        {
+          registered_state: "Texas",
+          company_name: "Company C",
+          paidup_capital: 300,
+        },
+        {
+          registered_state: "Texas",
+          company_name: "Company D",
+          paidup_capital: 400,
+        },
+      ],
+    ],
+    fetchGraphs: jest.fn(),
+    filteredGraphs: jest.fn(),
+  };
+
   beforeEach(() => {
     store = mockStore({
       graphs: {
-        graphs: [
-          [
-            {
-              company_name: "Company A",
-              paidup_capital: 1000,
-              registered_state: "State A",
-            },
-            {
-              company_name: "Company B",
-              paidup_capital: 2000,
-              registered_state: "State A",
-            },
-          ],
-          [
-            {
-              company_name: "Company C",
-              paidup_capital: 3000,
-              registered_state: "State B",
-            },
-            {
-              company_name: "Company D",
-              paidup_capital: 4000,
-              registered_state: "State B",
-            },
-          ],
-        ],
-        loading: false,
+        graphs: props.graphs,
+        loading: props.loading,
       },
     });
   });
 
-  // it("renders loading spinner when loading", () => {
-  //   store = mockStore({ graphs: { graphs: [], loading: true } });
-  //   render(
-  //     <Provider store={store}>
-  //       <MemoryRouter>
-  //         <Home />
-  //       </MemoryRouter>
-  //     </Provider>
-  //   );
+  test("renders loading spinner when loading", async () => {
+    const loadingProps = { ...props, loading: true };
+    store = mockStore({
+      graphs: {
+        graphs: loadingProps.graphs,
+        loading: loadingProps.loading,
+      },
+    });
 
-  //   const loadingSpinner = screen.getByRole("heading", { name: /Loading/i });
-  //   expect(loadingSpinner).toBeInTheDocument();
-  // });
-
-  // it("renders dropdown with all states", async () => {
-  //   render(
-  //     <Provider store={store}>
-  //       <MemoryRouter>
-  //         <Home />
-  //       </MemoryRouter>
-  //     </Provider>
-  //   );
-
-  //   const stateDropdown = screen.getByLabelText(/All Graphs Data/i);
-  //   expect(stateDropdown).toBeInTheDocument();
-
-  //   userEvent.selectOptions(stateDropdown, ["State A", "State B"]);
-  //   waitFor(() => expect(stateDropdown).toHaveValue("State B"));
-
-  //   // expect(stateDropdown.value).toBe("State B");
-  // });
-
-  it("renders charts for selected state", async () => {
+    console.log("checking the Store", store);
     render(
       <Provider store={store}>
         <MemoryRouter>
@@ -86,11 +74,26 @@ describe("Home component", () => {
       </Provider>
     );
 
-    // const stateDropdown = screen.getByLabelText(/All Graphs Data/i);
-    // await userEvent.selectOptions(stateDropdown, "State A");
-
-    // const chartContainers = await screen.findAllByTestId("chart-container");
-    // await waitFor(() => expect(chartContainers).toHaveLength(1));
-    // // expect(chartContainers).toHaveLength(2);
+    const loadingSpinner = screen.getByRole("heading", { name: /Loading/i });
+    expect(loadingSpinner).toBeInTheDocument();
   });
+  // test("renders dropdown to select state", async () => {
+  //   render(
+  //     <Provider store={store}>
+  //       <MemoryRouter>
+  //         <Home />
+  //       </MemoryRouter>
+  //     </Provider>
+  //   );
+
+  //   const dropdown = screen.getByRole("combobox");
+  //   waitFor(() => expect(dropdown).toBeInTheDocument());
+  //   // expect(dropdown).toBeInTheDocument();
+
+  //   //   const options = screen.getAllByRole("option");
+  //   //   expect(options).toHaveLength(props.graphs.length + 1); // +1 for the default option
+
+  //   //   const defaultOption = options[0];
+  //   //   expect(defaultOption).toHaveTextContent(/All Graphs Data/i);
+  // });
 });

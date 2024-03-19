@@ -8,12 +8,10 @@ import NavBar from "./NavBar";
 import { FaSpinner } from "react-icons/fa";
 import "./home.scss";
 import { IoIosArrowRoundBack } from "react-icons/io";
-import { ThunkDispatch } from "redux-thunk";
-import { AnyAction } from "redux";
 
 // Define the props for the Home component
-interface HomeProps {
-  loading: boolean;
+export interface HomeProps {
+  loading?: boolean;
   graphs: any[];
   fetchGraphs: () => void;
   filteredGraphs: (graphs: any[]) => void;
@@ -23,7 +21,6 @@ interface HomeProps {
 interface State {
   selectedState: string;
 }
-// type ThunkAction = (dispatch: ThunkDispatch<any, any, AnyAction>) => void;
 
 class Home extends Component<HomeProps, State> {
   state: State = {
@@ -51,6 +48,7 @@ class Home extends Component<HomeProps, State> {
     filteredGraphs(filteredData); // Dispatch filtered graphs action
     console.log("store data", filteredData); // Log filtered data
   };
+
   allgraphs = () => {
     this.setState({ selectedState: "" });
     this.props.filteredGraphs(this.props.graphs);

@@ -53,9 +53,9 @@ class NavBar extends Component<NavBarProps, NavBarState> {
   debouncedHandleSearchChange = debounce((value) => {
     this.setState({ search: value });
     this.props.dispatch(searchQuery(value));
-  }, 300);
+  }, 100);
 
-  handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
+  handleSearchChange = (event: any) => {
     const { value } = event.target;
     this.debouncedHandleSearchChange(value);
   };
@@ -72,25 +72,7 @@ class NavBar extends Component<NavBarProps, NavBarState> {
     }));
   };
 
-  // handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
-  //   const { value } = event.target;
-  //   this.setState({ search: value });
-  //   this.props.dispatch(searchQuery(value));
-  // };
-
-  // handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   const { search } = this.state;
-  //   this.props.dispatch(searchQuery(search));
-
-  //   const regex = new RegExp(search, "i");
-  //   const searchResults = this.props.graphs.filter(
-  //     (item) =>
-  //       regex.test(item[0].registered_state) || regex.test(item.description)
-  //   );
-  //   console.log("Search Results:", searchResults);
-  // };
-  handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  handleSearchSubmit = (e: any) => {
     e.preventDefault();
     const { search } = this.state;
     this.props.dispatch(searchQuery(search));
@@ -118,6 +100,9 @@ class NavBar extends Component<NavBarProps, NavBarState> {
           <ul>
             {searchResults.map((result, index) => (
               <Link to="/graph ">
+                {/* {result[0].map((state) => {
+                  return <li key={index}>{state.registered_state}</li>;
+                })} */}
                 <li key={index}>
                   {[...new Set(result.map((state) => state.registered_state))]}
                 </li>
